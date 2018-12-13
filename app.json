@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "sdkVersion": "27.0.0",
+    "version": "1.0.0",
+    "name": "DARDZ",
+    "slug": "dardz",
+    "description": "DARDZ is a game using dice + cards. It’s mostly luck with a touch of strategy. The app pairs with the game to make keeping score much easier.",
+    "privacy": "public",
+    "orientation": "portrait",
+    "primaryColor": "#000000",
+    "icon": "./src/assets/app_icons/main.png",
+    "ios": {
+      "bundleIdentifier": "com.pxlpotion.dardz",
+      "buildNumber": "1.0.0",
+      "icon": "./src/assets/app_icons/App_Store_Icon_no_alpha.png",
+      "supportsTablet": false,
+      "isTabletOnly": false,
+      "splash": {
+        "backgroundColor": "#000000",
+        "resizeMode": "contain",
+        "image": "./src/assets/app_icons/App_Store_Icon_no_alpha.png"
+      }
+    },
+    "android": {
+      "package": "com.pxlpotion.dardz",
+      "versionCode": 1,
+      "icon": "./src/assets/app_icons/main.png",
+      "adaptiveIcon": {
+        "backgroundColor": "#000000"
+      },
+      "permissions": [],
+      "splash": {
+        "backgroundColor": "#000000",
+        "resizeMode": "contain",
+        "image": "./src/assets/app_icons/main.png"
+      }
+    }
+  }
+}

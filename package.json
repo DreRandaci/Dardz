@@ -1,0 +1,36 @@
+{
+  "name": "Dardz",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-prettier": "^2.6.2",
+    "jest-expo": "~27.0.0",
+    "prettier": "1.14.2",
+    "react-native-scripts": "1.14.0",
+    "react-test-renderer": "16.3.1"
+  },
+  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "scripts": {
+    "start": "react-native-scripts start",
+    "eject": "react-native-scripts eject",
+    "android": "react-native-scripts android",
+    "ios": "react-native-scripts ios",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "dependencies": {
+    "@feathersjs/feathers": "^3.1.7",
+    "expo": "^27.0.1",
+    "feathers-localstorage": "^2.0.2",
+    "immutable": "^3.8.2",
+    "react": "16.3.1",
+    "react-native": "~0.55.2",
+    "react-native-elements": "1.0.0-beta5",
+    "react-native-keyboard-aware-scroll-view": "^0.6.0",
+    "react-navigation": "^2.5.5",
+    "unstated": "^2.1.1"
+  }
+}
