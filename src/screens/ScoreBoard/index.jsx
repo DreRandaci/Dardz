@@ -132,7 +132,6 @@ class ScoreBoard extends Component {
                   text: 'Save',
                   onPress: () => {
                     this.saveGame().then(res => {
-                      console.log({res})
                       this.props.navigation.navigate('Splash');
                     }).catch(err => console.log(err))
                   },

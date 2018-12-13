@@ -11,6 +11,16 @@ class PlayerStats extends Component {
     this.state = {
       players: []
     }
+    this.colors = [
+      { color: 'yellowSwatch', hex: '#FDCF85' },
+      { color: 'greenSwatch', hex: '#327F60' },
+      { color: 'lightBlueSwatch', hex: '#95C8E6' },
+      { color: 'redSwatch', hex: '#E95D4E' },
+      { color: 'pinkSwatch', hex: '#F4C6DB' },
+      { color: 'purpleSwatch', hex: '#4E3C6E' },
+      { color: 'orangeSwatch', hex: '#F0967B' },
+      { color: 'blueSwatch', hex: '#3347B5' }
+    ]
   }
 
   componentDidMount = () => {
@@ -19,21 +29,39 @@ class PlayerStats extends Component {
       trans.executeSql('SELECT * From Player', null, (webSql, { rows }) => {
         this.setState({ players: rows._array });
       });
-    });
+    }, (err) => console.log(err));
   }
 
   render() {
     const { players } = this.state;
     return (
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={{ backgroundColor: '#000', flex: 1, marginTop: 50 }}>
+        <ScrollView contentContainerStyle={{
+          backgroundColor: '#000',
+          flex: 1,
+          marginTop: 50
+        }}>
           {players.length ? (
             players.map((player, index) => {
+              const randomNum = Math.floor(Math.random() * 8);
+              const color = this.colors[randomNum].hex;
               return (
-                <TouchableOpacity key={index}>
+                <TouchableOpacity key={index} onPress={() => {
+                  this.props.navigation.navigate('Stats', { player, color });
+                }}>
                   <ListItem
                     style={{
-                      width: Dimensions.get('window').width, padding: 8
+                      width: Dimensions.get('window').width,
+                      paddingLeft: 50,
+                      paddingRight: 50,
+                      paddingTop: 12,
+                    }}
+                    containerStyle={{
+                      backgroundColor: color,
+                    }}
+                    titleStyle={{
+                      color: '#fff',
+                      fontSize: 20
                     }}
                     key={index}
                     title={player.PlayerName}
@@ -86,7 +114,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000'
-    // alignItems: 'center',
-    // justifyContent: 'center'
   }
 });

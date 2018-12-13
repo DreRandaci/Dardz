@@ -9,6 +9,7 @@ import HowTo from '../screens/HowTo';
 import DardzWebsite from '../screens/DardzWebsite';
 import VideoPlayer from '../screens/VideoPlayer';
 import PlayerStats from '../screens/PlayerStats';
+import Stats from '../screens/Stats';
 
 const AppStack = createStackNavigator(
   {
@@ -41,6 +42,12 @@ const AppStack = createStackNavigator(
     },
     PlayerStats: {
       screen: PlayerStats,
+      navigationOptions: {
+        header: null
+      }
+    },
+    Stats: {
+      screen: Stats,
       navigationOptions: {
         header: null
       }
