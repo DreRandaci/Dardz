@@ -28,36 +28,37 @@ export default class Stats extends Component {
         SELECT * From PlayerGame WHERE PlayerID = ?`
         , [player.PlayerID]
         , (webSql, { rows }) => {
-        const { stats } = this.state;
+        const stats = this.state;
         rows._array.map(playerScore => {
           switch (playerScore.ScoreID) {
             case 1:
-              this.setState({ first: this.state.first + 1 });
+              stats.first = stats.first + 1;
               break;
             case 2:
-              this.setState({ second: this.state.second + 1 });
+              stats.second = stats.second + 1;
               break;
             case 3:
-              this.setState({ third: this.state.third + 1 });
+              stats.third = stats.third + 1;
               break;
             case 4:
-              this.setState({ fourth: this.state.fourth + 1 });
+              stats.fourth = stats.fourth + 1;
               break;
             case 5:
-              this.setState({ fifth: this.state.fifth + 1 });
+              stats.fifth = stats.fifth + 1;
               break;
             case 6:
-              this.setState({ sixth: this.state.sixth + 1 });
+              stats.sixth = stats.sixth + 1;
               break;
             case 7:
-              this.setState({ seventh: this.state.seventh + 1 });
+              stats.seventh = stats.seventh + 1;
               break;
             case 8:
-              this.setState({ eigth: this.state.eigth + 1 });
+              stats.eigth = stats.eigth + 1;
               break;
             default:
               break;
           }
+          this.setState({...stats});
         })
       });
     }, (err) => console.log(err));

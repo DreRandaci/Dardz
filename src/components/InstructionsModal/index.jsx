@@ -19,7 +19,7 @@ const InstructionsModal = ({
   instructionsOpen, closeModal, instructionSet }) => {
   return (
     <Modal
-      animationType='slide'
+      animationType='fade'
       transparent={false}
       visible={instructionsOpen}
     >
