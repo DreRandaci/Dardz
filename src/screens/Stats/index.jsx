@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
-import { ListItem } from 'react-native-elements'
+import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
+import { ListItem, Icon } from 'react-native-elements'
 import { appContainer } from '../../contexts';
 import CustomText from '../../components/TextWithAppFont';
 import { Bold } from '../../components/TextWithAppFont';
@@ -120,6 +120,15 @@ export default class Stats extends Component {
             badgeVal={this.state.eigth}
             badgeColor={badgeColor}
           />
+          <View style={{ alignSelf: 'center', marginTop: 40 }}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.goBack()}
+            >
+              <CustomText>
+                <Bold>BACK</Bold>
+              </CustomText>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );

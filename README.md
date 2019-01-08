@@ -79,6 +79,8 @@ expo build:android
 
 - [] When you click ‘Add Player’ it should work like when you’re searching for a contact in your phone. As soon as you type a letter, any existing players with that letter pop up in a drop down menu. If you click enter after typing a new player name in, it should store that player in the app. We should make it so you can’t have 2 players with the same name.
 
+- [] The number currently getting added/subtracted get pushed down in the calculator
+
 ### *Known Bugs*
 - [X] Timer memory leak when a user is using the app for the first time
 - [X] The showFirstTimeInstructions overlay fires when repeating a game
