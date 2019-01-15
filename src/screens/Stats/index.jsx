@@ -9,14 +9,16 @@ export default class Stats extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      first: 0,
-      second: 0,
-      third: 0,
-      fourth: 0,
-      fifth: 0,
-      sixth: 0,
-      seventh: 0,
-      eigth: 0
+      stats: {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+        7: 0,
+        8: 0
+      }
     }
   }
 
@@ -28,45 +30,20 @@ export default class Stats extends Component {
         SELECT * From PlayerGame WHERE PlayerID = ?`
         , [player.PlayerID]
         , (webSql, { rows }) => {
-        const stats = this.state;
-        rows._array.map(playerScore => {
-          switch (playerScore.ScoreID) {
-            case 1:
-              stats.first = stats.first + 1;
-              break;
-            case 2:
-              stats.second = stats.second + 1;
-              break;
-            case 3:
-              stats.third = stats.third + 1;
-              break;
-            case 4:
-              stats.fourth = stats.fourth + 1;
-              break;
-            case 5:
-              stats.fifth = stats.fifth + 1;
-              break;
-            case 6:
-              stats.sixth = stats.sixth + 1;
-              break;
-            case 7:
-              stats.seventh = stats.seventh + 1;
-              break;
-            case 8:
-              stats.eigth = stats.eigth + 1;
-              break;
-            default:
-              break;
-          }
-          this.setState({...stats});
-        })
+          const stats = rows._array.map(({ ScoreID }) => {
+            const { stats } = this.state;
+            this.setState({ stats: {
+              ...stats,
+              [ScoreID]: stats[ScoreID] + 1 }
+            });
+        });
       });
     }, (err) => console.log(err));
   }
 
   render() {
     const player = this.props.navigation.getParam('player');
-    const badgeColor = this.props.navigation.getParam('color');
+    const { Color: badgeColor } = player;
     return (
       <View style={styles.container}>
         <View style={{ marginTop: 75 }}>
@@ -82,42 +59,42 @@ export default class Stats extends Component {
           />
           <StyledListItem
             title={'1st Place Finishes'}
-            badgeVal={this.state.first}
+            badgeVal={this.state.stats[1]}
             badgeColor={badgeColor}
           />
           <StyledListItem
             title={'2nd Place Finishes'}
-            badgeVal={this.state.second}
+            badgeVal={this.state.stats[2]}
             badgeColor={badgeColor}
           />
           <StyledListItem
             title={'3rd Place Finishes'}
-            badgeVal={this.state.third}
+            badgeVal={this.state.stats[3]}
             badgeColor={badgeColor}
           />
           <StyledListItem
             title={'4th Place Finishes'}
-            badgeVal={this.state.fourth}
+            badgeVal={this.state.stats[4]}
             badgeColor={badgeColor}
           />
           <StyledListItem
             title={'5th Place Finishes'}
-            badgeVal={this.state.fifth}
+            badgeVal={this.state.stats[5]}
             badgeColor={badgeColor}
           />
           <StyledListItem
             title={'6th Place Finishes'}
-            badgeVal={this.state.sixth}
+            badgeVal={this.state.stats[6]}
             badgeColor={badgeColor}
           />
           <StyledListItem
             title={'7th Place Finishes'}
-            badgeVal={this.state.seventh}
+            badgeVal={this.state.stats[7]}
             badgeColor={badgeColor}
           />
           <StyledListItem
             title={'8th Place Finishes'}
-            badgeVal={this.state.eigth}
+            badgeVal={this.state.stats[8]}
             badgeColor={badgeColor}
           />
           <View style={{ alignSelf: 'center', marginTop: 40 }}>

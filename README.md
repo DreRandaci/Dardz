@@ -75,19 +75,24 @@ expo build:android
 
 <!-- - [] The `Player Stats` should be a list ranked by how many times a player has won. It should list ‘games played’ and ‘games won’. You should be able to click on a player and see how many times they’ve gotten each place, 1-8. You should also be able to edit the players name. -->
 
-- [] Alphabitized list of players where you click on a player and it goes to a second screen with "games played" and number of times they've gotten 1st-8th. Players should be searchable
+- [X] Alphabitized list of players where you click on a player and it goes to a second screen with "games played" and number of times they've gotten 1st-8th. Players should be searchable
 
 - [] When you click ‘Add Player’ it should work like when you’re searching for a contact in your phone. As soon as you type a letter, any existing players with that letter pop up in a drop down menu. If you click enter after typing a new player name in, it should store that player in the app. We should make it so you can’t have 2 players with the same name.
 
 - [] The number currently getting added/subtracted get pushed down in the calculator
 
+- [] Add “Images” button to ‘How to Play’ menu. order from the top. Instructions, Questions & Rules, Images.
+
+- [] Make (See card layout images) and (See game set up image) link to the images, and add an X or < back button.
+
+- [] Make Instructions and Questions & Rules searchable if possible.
+
+- [] Fix the swipe back function from all the pages on the ‘how to play’ menu.
+
+- [] Revise the splash screen when you click ’start game’ to say, “Click on a players name to change their score. Use the +/- and = buttons."
+
 ### *Known Bugs*
-- [X] Timer memory leak when a user is using the app for the first time
-- [X] The showFirstTimeInstructions overlay fires when repeating a game
-- [X] When adding a new player name, make sure the text clears on "Enter" and turn off autocorrect
-- [] Fix instruction PNG resolutions
-- [X] When you swipe from the left in the instructions modal it should take you to the How To screen and not back to home/splash
-- [X] Fix exiting out of the video view
+- [] When you swipe from the left in the instructions modal it should take you to the How To screen and not back to home/splash
 
 ### NOTES:
 - See if there can be a user scenario when the app is submitted so the tester can walk through the app in a specific process

@@ -11,10 +11,9 @@ class PlayerStats extends Component {
     super(props);
     this.state = {
       players: [],
-      _players: [],
       search: ''
-    }
-    this._players = []
+    };
+    this._players = [];
     this.colors = [
       { color: 'yellowSwatch', hex: '#FDCF85' },
       { color: 'greenSwatch', hex: '#327F60' },
@@ -24,34 +23,40 @@ class PlayerStats extends Component {
       { color: 'purpleSwatch', hex: '#4E3C6E' },
       { color: 'orangeSwatch', hex: '#F0967B' },
       { color: 'blueSwatch', hex: '#3347B5' }
-    ]
+    ];
   }
 
   componentDidMount = () => {
     const { DatabaseConnection } = appContainer;
     DatabaseConnection.transaction(trans => {
       trans.executeSql('SELECT * From Player', null, (webSql, { rows }) => {
-        this._players = rows._array;
-        this.setState({ players: rows._array });
+        const playersWithColors = rows._array.map(player => {
+          const randomNum = Math.floor(Math.random() * 8);
+          const color = this.colors[randomNum].hex;
+          const playerObj = {
+            ...player,
+            Color: color
+          }
+          return playerObj
+        });
+        this._players = playersWithColors;
+        this.setState({ players: playersWithColors });
       });
     }, (err) => console.log(err));
   }
 
   handleTextChange = (search) => {
-    const { players } = this.state;
-    const filteredPlayers =
-      players.filter(player => player.PlayerName.indexOf(search.toUpperCase()) > -1);
-    if (filteredPlayers.length) {
-      this.setState({ players: filteredPlayers, search });
+    if (search !== '') {
+      const { players } = this.state;
+      const filteredPlayers =
+        players.filter(player => player.PlayerName.indexOf(search.toUpperCase()) > -1);
+      if (filteredPlayers.length) {
+        this.setState({ players: filteredPlayers, search });
+      }
+    } else {
+      this.setState({ players: this._players });
     }
   }
-
-  handleClear = () => {
-    // TODO: this method isnt firing. could be a bug with React Native elements searchbar
-    console.log('clear')
-    this.setState({ players: this._players, search: '' });
-  };
-
 
   render() {
     const { players } = this.state;
@@ -75,19 +80,16 @@ class PlayerStats extends Component {
               }}
               autoCorrect={false}
               onChangeText={this.handleTextChange}
-              // clearIcon={null}
-              onClear={this.handleClear}
+              clearIcon={null}
               value={this.state.search}
-              // clearButtonMode='always'
+              clearButtonMode='always'
               placeholder='Search'
             />)}
           {players.length ? (
             players.map((player, index) => {
-              const randomNum = Math.floor(Math.random() * 8);
-              const color = this.colors[randomNum].hex;
               return (
                 <TouchableOpacity key={index} onPress={() => {
-                  this.props.navigation.navigate('Stats', { player, color });
+                  this.props.navigation.navigate('Stats', { player });
                 }}>
                   <ListItem
                     style={{
@@ -97,7 +99,7 @@ class PlayerStats extends Component {
                       paddingTop: 12,
                     }}
                     containerStyle={{
-                      backgroundColor: color,
+                      backgroundColor: player.Color,
                     }}
                     titleStyle={{
                       color: '#fff',
