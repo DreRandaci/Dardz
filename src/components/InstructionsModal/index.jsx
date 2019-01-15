@@ -13,7 +13,7 @@ import {
   QuestionsAndRules,
   TeamDardz,
   DrinkingDardz
-} from '../../assets/Instructions';
+} from '../Instructions';
 
 const InstructionsModal = ({
   instructionsOpen, closeModal, instructionSet }) => {
@@ -24,7 +24,7 @@ const InstructionsModal = ({
       visible={instructionsOpen}
     >
       <ScrollView
-        style={{ padding: 30, backgroundColor: '#000' }}
+        style={{ padding: 30 }}
         minimumZoomScale={1}
         maximumZoomScale={5}
       >

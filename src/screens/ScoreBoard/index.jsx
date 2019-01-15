@@ -249,7 +249,7 @@ class ScoreBoard extends Component {
             justifyContent: 'center', flex: 1 }}
           >
             <TextWithAppFont color='#fff'>
-              Click on a player's name to add or subtract points!
+              Click on a players name to change their score. Use the +/- and = buttons.
             </TextWithAppFont>
             <View style={{ marginTop: 35, marginLeft: 25 }}>
               <TouchableOpacity onPress={() => {

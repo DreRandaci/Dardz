@@ -18,7 +18,7 @@ export const Bold = (props) => (
   <Text
     {...props}
     style={{
-      fontFamily: 'Radikal-Bold', color: '#fff',
+      fontFamily: 'Radikal-Bold',
       fontSize: props.fontSize || 20
     }}
   >
@@ -30,7 +30,7 @@ export const BoldItalic = (props) => (
   <Text
     {...props}
     style={{
-      fontFamily: 'Radikal-Bold-Italic', color: '#fff',
+      fontFamily: 'Radikal-Bold-Italic',
       fontSize: props.fontSize || 20
     }}
   >
@@ -42,7 +42,7 @@ export const Italic = (props) => (
   <Text
     {...props}
     style={{
-      fontFamily: 'Radikal-Italic', color: '#fff',
+      fontFamily: 'Radikal-Italic',
       fontSize: props.fontSize || 20
   }}
   >
@@ -54,6 +54,5 @@ export const Br = () => ("\n")
 
 TextWithAppFont.defaultProps = {
   fontFamily: 'Radikal',
-  fontSize: 24,
-  color: '#fff'
+  fontSize: 24
 }

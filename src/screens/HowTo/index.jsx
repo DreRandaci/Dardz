@@ -5,10 +5,11 @@ import { gray999 } from '../../colors';
 import Logo from '../../components/LogoHeader';
 import SplashButton from '../../components/SplashButtons';
 import Instructions from '../../assets/Instructions.png';
-import QuickList from '../../assets/QuickList.png';
-import QuestionsAndRules from '../../assets/Questions&Rules.png';
+// import QuickList from '../../assets/QuickList.png';
 import TeamDardz from '../../assets/TeamDardz.png';
 import DrinkingDardz from '../../assets/DrinkingDardz.png';
+import Images from '../../assets/Images.png';
+import QuestionsAndRules from '../../assets/Questions&Rules.png';
 import WatchVideo from '../../assets/WatchVideo.png';
 import InstructionsModal from '../../components/InstructionsModal';
 
@@ -41,17 +42,21 @@ export default class HowTo extends Component {
           imgStyles={styles.logoImg}
         />
         <SplashButton
-          // TODO: subscribe and pull assets off of appContainer
           asset={Instructions}
           onPress={() => this.toggleModal('instructions')}
         />
-        <SplashButton
+        {/* <SplashButton
           asset={QuickList}
           onPress={() => this.toggleModal('quickList')}
-        />
+        /> */}
         <SplashButton
           asset={QuestionsAndRules}
           onPress={() => this.toggleModal('questionsAndRules')}
+        />
+        {/* TODO: make sure the routes are lowercase and not pascal case */}
+        <SplashButton
+          asset={Images}
+          onPress={() => this.props.navigation.navigate('Images')}
         />
         <SplashButton
           asset={TeamDardz}
@@ -61,6 +66,7 @@ export default class HowTo extends Component {
           asset={DrinkingDardz}
           onPress={() => this.toggleModal('drinkingDardz')}
         />
+        {/* TODO: make sure the routes are lowercase and not pascal case */}
         <SplashButton
           asset={WatchVideo}
           onPress={() => this.props.navigation.navigate('VideoPlayer')}

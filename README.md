@@ -71,15 +71,16 @@ expo build:android
 
 - [X] When you click ‘start game’ the first time you use the app, an instruction window should pop up that says, “Click on a player’s name to add points to their score.” Then maybe a button to close the window that says ‘Ok’.
 
-- [] Check layouts on older iPhone devices
 
 <!-- - [] The `Player Stats` should be a list ranked by how many times a player has won. It should list ‘games played’ and ‘games won’. You should be able to click on a player and see how many times they’ve gotten each place, 1-8. You should also be able to edit the players name. -->
 
 - [X] Alphabitized list of players where you click on a player and it goes to a second screen with "games played" and number of times they've gotten 1st-8th. Players should be searchable
 
-- [] When you click ‘Add Player’ it should work like when you’re searching for a contact in your phone. As soon as you type a letter, any existing players with that letter pop up in a drop down menu. If you click enter after typing a new player name in, it should store that player in the app. We should make it so you can’t have 2 players with the same name.
+- [X] Revise the splash screen when you click ’start game’ to say, “Click on a players name to change their score. Use the +/- and = buttons."
 
-- [] The number currently getting added/subtracted get pushed down in the calculator
+- [] Check layouts on older iPhone devices
+
+- [] When you click ‘Add Player’ it should work like when you’re searching for a contact in your phone. As soon as you type a letter, any existing players with that letter pop up in a drop down menu. If you click enter after typing a new player name in, it should store that player in the app. We should make it so you can’t have 2 players with the same name.
 
 - [] Add “Images” button to ‘How to Play’ menu. order from the top. Instructions, Questions & Rules, Images.
 
@@ -87,12 +88,10 @@ expo build:android
 
 - [] Make Instructions and Questions & Rules searchable if possible.
 
-- [] Fix the swipe back function from all the pages on the ‘how to play’ menu.
-
-- [] Revise the splash screen when you click ’start game’ to say, “Click on a players name to change their score. Use the +/- and = buttons."
 
 ### *Known Bugs*
-- [] When you swipe from the left in the instructions modal it should take you to the How To screen and not back to home/splash
+- [] When you swipe from the left in any of the instructions modal it should take you to the "How To" screen and not back to the home/splash screen
+- [] The number currently getting added/subtracted get pushed down in the calculator
 
 ### NOTES:
 - See if there can be a user scenario when the app is submitted so the tester can walk through the app in a specific process
