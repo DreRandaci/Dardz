@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import { createStackNavigator } from 'react-navigation';
 import { appContainer, Subscribe } from '../contexts';
@@ -8,6 +8,7 @@ import Splash from '../screens/Splash';
 import HowTo from '../screens/HowTo';
 import DardzWebsite from '../screens/DardzWebsite';
 import VideoPlayer from '../screens/VideoPlayer';
+import GameSetupImages from '../screens/GameSetupImages';
 import PlayerStats from '../screens/PlayerStats';
 import Stats from '../screens/Stats';
 
@@ -60,6 +61,12 @@ const AppStack = createStackNavigator(
     },
     VideoPlayer: {
       screen: VideoPlayer,
+      navigationOptions: {
+        header: null
+      }
+    },
+    GameSetupImages: {
+      screen: GameSetupImages,
       navigationOptions: {
         header: null
       }

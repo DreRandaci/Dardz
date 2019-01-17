@@ -88,7 +88,6 @@ expo build:android
 
 - [] Make Instructions and Questions & Rules searchable if possible.
 
-
 ### *Known Bugs*
 - [] When you swipe from the left in any of the instructions modal it should take you to the "How To" screen and not back to the home/splash screen
 - [] The number currently getting added/subtracted get pushed down in the calculator

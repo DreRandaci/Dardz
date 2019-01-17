@@ -185,7 +185,7 @@ import { Bold, BoldItalic, Italic, Br } from '../../components/TextWithAppFont';
 // );
 export const Instructions = () => (
   <CustomText fontSize={18}>
-    <CustomText fontSize={24}>INSTRUCTIONS</CustomText>
+    <Bold fontSize={24}>INSTRUCTIONS</Bold>
     <Br />
     <Br />
     Welcome to DARDZ. Dice + Cards. You&#39;ve just entered the fun zone where a bit of luck and a touch of strategy can go a long way. (2-8 players)
@@ -286,13 +286,18 @@ export const Instructions = () => (
     <Br />
     1. Add/subtract points for the Jackpot, Boost ‘em, and Bunk ‘em action cards right when they’re played.
     <Br />
+    <Br />
     2. Add +20 points right when someone rolls 3-of-a-kind.
+    <Br />
     <Br />
     3. Add +5 points right when someone cleans ‘em up on their Bonus Roll.
     <Br />
+    <Br />
     4. Add +10 points to the player who wins each round by getting 10 cards in their points pile first.
     <Br />
+    <Br />
     5. Add/subtract the point values on the cards in your points pile at the end of each round.
+    <Br />
     <Br />
     6. Add points for the Lucky Loser roll for players ending a round with 3 or less cards in their points pile.
     <Br />

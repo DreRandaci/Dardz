@@ -53,10 +53,9 @@ export default class HowTo extends Component {
           asset={QuestionsAndRules}
           onPress={() => this.toggleModal('questionsAndRules')}
         />
-        {/* TODO: make sure the routes are lowercase and not pascal case */}
         <SplashButton
           asset={Images}
-          onPress={() => this.props.navigation.navigate('Images')}
+          onPress={() => this.props.navigation.navigate('GameSetupImages')}
         />
         <SplashButton
           asset={TeamDardz}
@@ -66,7 +65,6 @@ export default class HowTo extends Component {
           asset={DrinkingDardz}
           onPress={() => this.toggleModal('drinkingDardz')}
         />
-        {/* TODO: make sure the routes are lowercase and not pascal case */}
         <SplashButton
           asset={WatchVideo}
           onPress={() => this.props.navigation.navigate('VideoPlayer')}

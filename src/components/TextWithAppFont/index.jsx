@@ -5,10 +5,10 @@ import { Text } from 'react-native';
   I created separate components for Bold, Italic, Br, etc. rather than passing those as props to the regular React Native Text API for readability throughout the instructions markup. They read and act similarly to HTML <span> tags.
 */
 
-export default TextWithAppFont = ({ style, fontFamily, color, fontSize, ...props })=> (
+export default TextWithAppFont = ({ style, fontFamily, color, fontSize, ...props }) => (
   <Text
     {...props}
-    style={[style, { fontFamily, color, fontSize }]}
+    style={[style, { fontFamily, color: color || '#fff', fontSize }]}
   >
     {props.children}
   </Text>
@@ -19,7 +19,8 @@ export const Bold = (props) => (
     {...props}
     style={{
       fontFamily: 'Radikal-Bold',
-      fontSize: props.fontSize || 20
+      fontSize: props.fontSize || 20,
+      color: props.color || '#fff'
     }}
   >
     {props.children}{' '}
@@ -31,7 +32,8 @@ export const BoldItalic = (props) => (
     {...props}
     style={{
       fontFamily: 'Radikal-Bold-Italic',
-      fontSize: props.fontSize || 20
+      fontSize: props.fontSize || 20,
+      color: props.color || '#fff'
     }}
   >
     {props.children}
@@ -43,7 +45,8 @@ export const Italic = (props) => (
     {...props}
     style={{
       fontFamily: 'Radikal-Italic',
-      fontSize: props.fontSize || 20
+      fontSize: props.fontSize || 20,
+      color: props.color || '#fff'
   }}
   >
     {props.children}{' '}
