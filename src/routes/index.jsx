@@ -8,24 +8,27 @@ import Splash from '../screens/Splash';
 import HowTo from '../screens/HowTo';
 import DardzWebsite from '../screens/DardzWebsite';
 import VideoPlayer from '../screens/VideoPlayer';
-import GameSetupImages from '../screens/GameSetupImages';
+// import GameSetupImages from '../screens/GameSetupImages';
 import PlayerStats from '../screens/PlayerStats';
 import Stats from '../screens/Stats';
+
+const defaultNavOptions = {
+  header: null,
+  gesturesEnabled: false
+};
 
 const AppStack = createStackNavigator(
   {
     ScoreBoard: {
       screen: ScoreBoard,
       navigationOptions: {
-        header: null,
-        gesturesEnabled: false
+        ...defaultNavOptions
       }
     },
     CreateGame: {
       screen: CreateGame,
       navigationOptions: {
-        header: null,
-        gesturesEnabled: false
+        ...defaultNavOptions
       }
     },
     Splash: {
@@ -37,8 +40,7 @@ const AppStack = createStackNavigator(
     HowTo: {
       screen: HowTo,
       navigationOptions: {
-        header: null,
-        gesturesEnabled: false
+        ...defaultNavOptions
       }
     },
     PlayerStats: {
@@ -65,12 +67,12 @@ const AppStack = createStackNavigator(
         header: null
       }
     },
-    GameSetupImages: {
-      screen: GameSetupImages,
-      navigationOptions: {
-        header: null
-      }
-    }
+    // GameSetupImages: {
+    //   screen: GameSetupImages,
+    //   navigationOptions: {
+    //     header: null
+    //   }
+    // }
   },
   {
     initialRouteName: 'Splash'

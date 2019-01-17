@@ -55,7 +55,8 @@ export default class HowTo extends Component {
         />
         <SplashButton
           asset={Images}
-          onPress={() => this.props.navigation.navigate('GameSetupImages')}
+          // onPress={() => this.props.navigation.navigate('GameSetupImages')}
+          onPress={() => this.toggleModal('images')}
         />
         <SplashButton
           asset={TeamDardz}
@@ -72,8 +73,10 @@ export default class HowTo extends Component {
         <InstructionsModal
           instructionsOpen={instructionsOpen}
           instructionSet={this.state.instructionSet}
-          closeModal={() => this.closeModal()}
-        />
+          closeModal={this.closeModal}
+          toggleModal={this.toggleModal}
+          // navigation={this.props.navigation}
+      />
         <View style={styles.backChev}>
           <TouchableOpacity
             onPress={() => this.props.navigation.goBack()}

@@ -82,14 +82,14 @@ expo build:android
 
 - [] When you click ‘Add Player’ it should work like when you’re searching for a contact in your phone. As soon as you type a letter, any existing players with that letter pop up in a drop down menu. If you click enter after typing a new player name in, it should store that player in the app. We should make it so you can’t have 2 players with the same name.
 
-- [] Add “Images” button to ‘How to Play’ menu. order from the top. Instructions, Questions & Rules, Images.
+- [X] Add “Images” button to ‘How to Play’ menu. order from the top. Instructions, Questions & Rules, Images.
 
 - [] Make (See card layout images) and (See game set up image) link to the images, and add an X or < back button.
 
 - [] Make Instructions and Questions & Rules searchable if possible.
 
 ### *Known Bugs*
-- [] When you swipe from the left in any of the instructions modal it should take you to the "How To" screen and not back to the home/splash screen
+- [X] When you swipe from the left in any of the instructions modal it should take you to the "How To" screen and not back to the home/splash screen
 - [] The number currently getting added/subtracted get pushed down in the calculator
 
 ### NOTES:
