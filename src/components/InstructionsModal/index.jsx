@@ -33,6 +33,7 @@ const InstructionsModal = ({
           {instructionSet === 'instructions' &&
           /*
             NOTE: this is prop drilling weirdness. Send the toggleModal function down and there will be a check if specifically the <Instructions> component fired it, requesting the "images" modal be shown. See the `instructionsSet` check below.
+            TODO: add better routing for image links to avoid this
           */
             <Instructions toggleModal={toggleModal} />
           }
@@ -48,14 +49,15 @@ const InstructionsModal = ({
           {instructionSet === 'drinkingDardz' &&
             <DrinkingDardz />
           }
-          {instructionSet === 'images' &&
+          {(instructionSet === 'imagesOnly'
+            || instructionSet === 'imagesFromLink') &&
             <GameSetupImages />
           }
         </View>
       </ScrollView>
       <TouchableOpacity
         onPress={() => {
-          if (instructionSet === 'images') {
+          if (instructionSet === 'imagesFromLink') {
             toggleModal('instructions')
           } else {
             closeModal();

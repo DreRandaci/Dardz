@@ -56,7 +56,7 @@ export default class HowTo extends Component {
         <SplashButton
           asset={Images}
           // onPress={() => this.props.navigation.navigate('GameSetupImages')}
-          onPress={() => this.toggleModal('images')}
+          onPress={() => this.toggleModal('imagesOnly')}
         />
         <SplashButton
           asset={TeamDardz}

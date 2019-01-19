@@ -63,9 +63,11 @@ export const Instructions = ({ toggleModal }) => (
     <Br />
     <Br />
     DARDZ consists of 3 dice and 90 cards. There are 6 of each number 1-12, and 3 of all 6 action cards. Each card has a point value listed at the bottom the card.
+    <Br />
+    <Br />
     <TouchableOpacity
       onPress={() => {
-        toggleModal('images');
+        toggleModal('imagesFromLink');
       }}
     >
       <CustomText fontSize={18} color='blue'>
@@ -78,7 +80,18 @@ export const Instructions = ({ toggleModal }) => (
     <Bold fontSize={20} color='#000'>GAME SET UP</Bold>
     <Br />
     <Br />
-    Shuffle ALL the cards and deal each player 3 cards, face up. Place the remaining cards face down to create the draw pile. Do this to start each round. Your points pile is kept right next to you, face down. (See game set up image.)
+    Shuffle ALL the cards and deal each player 3 cards, face up. Place the remaining cards face down to create the draw pile. Do this to start each round. Your points pile is kept right next to you, face down.
+    <Br />
+    <Br />
+    <TouchableOpacity
+      onPress={() => {
+        toggleModal('imagesFromLink');
+      }}
+    >
+      <CustomText fontSize={18} color='blue'>
+        (See game set up image.)
+      </CustomText>
+    </TouchableOpacity>
     <Br />
     <Br />
 
@@ -180,6 +193,199 @@ export const Instructions = ({ toggleModal }) => (
     <Br />
     <Br />
     Any questions should be answered in the Questions &amp; Rules section. Make sure and try Team DARDZ and Drinking DARDZ. The instructions can be found on the app and on the website, DARDZ.com.
+  </CustomText>
+);
+
+export const QuestionsAndRules = () => (
+  <CustomText fontSize={18} color='#000'>
+    <Bold fontSize={24} color='#000'>QUESTIONS & RULES</Bold>
+    <Br />
+    (categories listed alphabetically)
+    <Br />
+    <Br />
+    <CustomText fontSize={20} color='#000'>ACTION CARDS:</CustomText>
+    <Br />
+    <Br />
+    - If you have multiple action cards, choose which one to play first, but
+      play them all before going on with your turn.
+    <Br />
+    - The rolls used for action cards don’t count as one of the rolls for your
+      turn.
+    <Br />
+    - In the first round, the Bunk ‘em and Boost ‘em action cards won’t add
+      or subtract points from anyone unless a player has already scored
+      points for the Jackpot card or by rolling 3-of-a-kind.
+    <Br />
+    - The golden 7 is not an action card. It’s just worth more points than a
+      regular 7.
+    <Br />
+    - If you’re in first place and you have a Bunk ‘em card, you have to play
+      it and bunk yourself.
+    <Br />
+    <Br />
+    <CustomText fontSize={20} color='#000'>BONUS ROLL:</CustomText>
+    <Br />
+    <Br />
+    - Start the Bonus Roll with 3 cards in your hand.
+    <Br />
+    - If you drew an action card after your third roll, play it first but still don’t draw a new card.
+    <Br />
+    <Br />
+
+    <CustomText fontSize={20} color='#000'>DRAW PILE:</CustomText>
+    <Br />
+    <Br />
+    - There’s no order to who draws a new card first.
+    <Br />
+    - If you run out of cards in the draw pile, just keep playing until someone
+gets 10 cards in their points pile. If that’s not possible, end the round
+and nobody gets the +10 points.
+    <Br />
+    <Br />
+
+    <CustomText fontSize={20} color='#000'>POINTS PILE:</CustomText>
+    <Br />
+    <Br />
+    - Both number and action cards in your points pile count as 1 or your 10
+    cards.
+    <Br />
+    - You can arrange your points pile so other players don’t know how
+    many cards you have, but you can’t hide your points pile.
+    <Br />
+    - If someone asks how many cards you have in your points pile you
+    don’t have to tell them. But you do have to keep your points pile visible.
+    <Br />
+    - If multiple players get 10 cards in their points pile at the same time,
+    they decide who wins the round with a Roll-Off.
+    <Br />
+    - If a player reaches 10 cards at the same time another player reaches
+    11 or 12 cards, the player with the most cards wins the round.
+    <Br />
+    <Br />
+
+    <CustomText fontSize={20} color='#000'>ROLLS:</CustomText>
+    <Br />
+    <Br />
+    - On your first roll, if nobody has the number rolled move onto your
+second roll.
+    <Br />
+    - You can only pick 1 number per roll.
+    <Br />
+    - You’re allowed to pick nothing on your 2nd and 3rd rolls if no option
+matches what’s in your hand.
+    <Br />
+    <Br />
+
+    <CustomText fontSize={20} color='#000'>RULES:</CustomText>
+    <Br />
+    <Br />
+    - You can’t hide the cards in your hand.
+    <Br />
+    - You’re not allowed to skip a roll or skip your turn.
+    <Br />
+    - When someone chooses a number that’s in your hand you have to
+add it to your points pile.
+    <Br />
+    - You’re allowed to look at the scoreboard at any time.
+    <Br />
+    <Br />
+
+    <CustomText fontSize={20} color='#000'>SCORING & WINNING:</CustomText>
+    <Br />
+    <Br />
+    - You can’t go below zero points.
+    <Br />
+    - You can’t win the game in the middle of a round even if you break 150.
+    <Br />
+    - If multiple players break 150, the player with the highest score wins
+    the game.
+    <Br />
+    - If multiple players tie with the highest score above 150, decide who
+    wins the game with a best-out-of-3 Roll-Off!
+    <Br />
+    - Make sure you have 3 cards in your hand after your turn is
+    finished.-Points in your points pile aren’t added to your score until the
+    end of the round.
+    <Br />
+    -Thepoint value of each number card is roughly based on the probabili-
+    ty of rolling that number.
+    <Br />
+    <Br />
+
+    <CustomText fontSize={20} color='#000'>3-OF-A-KIND:</CustomText>
+    <Br />
+    <Br />
+    - When you roll 3-of-a-kind, those 3 dice still act as your third roll.
+  </CustomText>
+);
+
+export const TeamDardz = () => (
+  <CustomText fontSize={18} color='#000'>
+    <Bold fontSize={24} color='#000'>TEAM DARDZ</Bold>
+    <Br />
+    <Br />
+    If you have an even amount of players, pair up in teams of 2. Sit across from your teammate so you aren’t next to each other. All the rules are the same, except for a few small tweaks.
+    <Br />
+    <Br />
+    Each round is a race to get 20 total cards between you and your teammate. It doesn’t matter which teammate has the cards, you just need 20 between the 2 of you. The team who gets 20 cards first wins the round and gets +10 points. Then add both teammates points together.
+    <Br />
+    <Br />
+    Only play action cards in your own hand, not your partner’s hand. As for the <Italic color='#000'>Lucky Loser</Italic>roll, if your team ends with 6 or less total cards between both players, your team gets 1 Lucky Loser roll. Use both players hands during the Bonus Roll. If your team wins a round, choose which player rolls first in the next round.
+    <Br />
+    <Br />
+    If you have an odd amount of players and still want to play teams, the solo person wins a round with 10 cards in their points pile. At the end of a round, double the points in the solo players points pile.
+  </CustomText>
+);
+
+export const DrinkingDardz = () => (
+  <CustomText fontSize={18} color='#000'>
+    <Bold fontSize={24} color='#000'>DRINKING DARDZ</Bold>
+    <Br />
+    <Br />
+    <Bold fontSize={20} color='#000'>RECIPE</Bold>
+    <Br />
+    Make sure and try out our world famous cocktail, <BoldItalic color='#000'>The Dardy</BoldItalic>: 1.5 shots of Bacardi Rum, a splash of strawberry lemonade, a splash of orange juice, a splash of soda water, a dash of grenadine, and garnished with a fresh lemon and lime. Give it a soft shake like you’re getting ready to roll some dice, and then enjoy it like a true playa.
+    <Br />
+    <Br />
+
+    <Bold fontSize={20} color='#000'>DRINKING RULES</Bold>
+    <Br />
+    You’ll have to get creative and make up some of your own drinking rules, but here are a few to get you started.
+    <Br />
+    <Br />
+    - When you get <Italic color='#000'>“skunked”</Italic>by missing on all 3 of your rolls, you drink.
+    <Br />
+    <Br />
+    - When you <Italic color='#000'>“clean ‘em up”</Italic>by adding all of your cards to your points pile on the bonus roll, everyone else drinks.
+    <Br />
+    <Br />
+    - When you play the <Italic color='#000'>Clock</Italic>, everyone drinks.
+    <Br />
+    <Br />
+    - When you get a <Italic color='#000'>Skull,</Italic>you drink.
+    <Br />
+    <Br />
+    - When you guess right on the <Italic color='#000'>Jackpot,</Italic>everyone drinks. When you guess wrong on the <Italic color='#000'>Jackpot,</Italic>you drink.
+    <Br />
+    <Br />
+    - When you lose a <Italic color='#000'>Roll-Off,</Italic>you drink.
+    <Br />
+    <Br />
+    - When you get points from <Italic color='#000'>Boost ‘em,</Italic>you drink.
+    <Br />
+    <Br />
+    - When you lose points from <Italic color='#000'>Bunk ‘em,</Italic>you drink.
+    <Br />
+    <Br />
+    - When you rolls Snake Eyes, everyone does a full cheers with eye contact, a nice clank, and then everyone drinks.
+    <Br />
+    <Br />
+    - When you roll and a dice falls off the table, you drink.
+    <Br />
+    <Br />
+
+    It goes without saying to be safe, and don’t be a dummy…but have fun playing drinking DARDZ!
+
   </CustomText>
 );
 
@@ -415,130 +621,6 @@ export const Instructions = ({ toggleModal }) => (
 //   </CustomText>
 // );
 
-
-export const QuestionsAndRules = () => (
-  <CustomText fontSize={18} color='#000'>
-    <Bold fontSize={24} color='#000'>QUESTIONS & RULES</Bold>
-    <Br />
-    (categories listed alphabetically)
-    <Br />
-    <Br />
-    <CustomText fontSize={20} color='#000'>ACTION CARDS:</CustomText>
-    <Br />
-    <Br />
-    - If you have multiple action cards, choose which one to play first, but
-      play them all before going on with your turn.
-    <Br />
-    - The rolls used for action cards don’t count as one of the rolls for your
-      turn.
-    <Br />
-    - In the first round, the Bunk ‘em and Boost ‘em action cards won’t add
-      or subtract points from anyone unless a player has already scored
-      points for the Jackpot card or by rolling 3-of-a-kind.
-    <Br />
-    - The golden 7 is not an action card. It’s just worth more points than a
-      regular 7.
-    <Br />
-    - If you’re in first place and you have a Bunk ‘em card, you have to play
-      it and bunk yourself.
-    <Br />
-    <Br />
-    <CustomText fontSize={20} color='#000'>BONUS ROLL:</CustomText>
-    <Br />
-    <Br />
-    - Start the Bonus Roll with 3 cards in your hand.
-    <Br />
-    - If you drew an action card after your third roll, play it first but still don’t draw a new card.
-    <Br />
-    <Br />
-
-    <CustomText fontSize={20} color='#000'>DRAW PILE:</CustomText>
-    <Br />
-    <Br />
-    - There’s no order to who draws a new card first.
-    <Br />
-    - If you run out of cards in the draw pile, just keep playing until someone
-gets 10 cards in their points pile. If that’s not possible, end the round
-and nobody gets the +10 points.
-    <Br />
-    <Br />
-
-    <CustomText fontSize={20} color='#000'>POINTS PILE:</CustomText>
-    <Br />
-    <Br />
-    - Both number and action cards in your points pile count as 1 or your 10
-    cards.
-    <Br />
-    - You can arrange your points pile so other players don’t know how
-    many cards you have, but you can’t hide your points pile.
-    <Br />
-    - If someone asks how many cards you have in your points pile you
-    don’t have to tell them. But you do have to keep your points pile visible.
-    <Br />
-    - If multiple players get 10 cards in their points pile at the same time,
-    they decide who wins the round with a Roll-Off.
-    <Br />
-    - If a player reaches 10 cards at the same time another player reaches
-    11 or 12 cards, the player with the most cards wins the round.
-    <Br />
-    <Br />
-
-    <CustomText fontSize={20} color='#000'>ROLLS:</CustomText>
-    <Br />
-    <Br />
-    - On your first roll, if nobody has the number rolled move onto your
-second roll.
-    <Br />
-    - You can only pick 1 number per roll.
-    <Br />
-    - You’re allowed to pick nothing on your 2nd and 3rd rolls if no option
-matches what’s in your hand.
-    <Br />
-    <Br />
-
-    <CustomText fontSize={20} color='#000'>RULES:</CustomText>
-    <Br />
-    <Br />
-    - You can’t hide the cards in your hand.
-    <Br />
-    - You’re not allowed to skip a roll or skip your turn.
-    <Br />
-    - When someone chooses a number that’s in your hand you have to
-add it to your points pile.
-    <Br />
-    - You’re allowed to look at the scoreboard at any time.
-    <Br />
-    <Br />
-
-    <CustomText fontSize={20} color='#000'>SCORING & WINNING:</CustomText>
-    <Br />
-    <Br />
-  - You can’t go below zero points.
-    <Br />
-  - You can’t win the game in the middle of a round even if you break 150.
-    <Br />
-  - If multiple players break 150, the player with the highest score wins
-  the game.
-    <Br />
-  - If multiple players tie with the highest score above 150, decide who
-  wins the game with a best-out-of-3 Roll-Off!
-    <Br />
-  - Make sure you have 3 cards in your hand after your turn is
-  finished.-Points in your points pile aren’t added to your score until the
-  end of the round.
-    <Br />
-  -Thepoint value of each number card is roughly based on the probabili-
-  ty of rolling that number.
-    <Br />
-    <Br />
-
-    <CustomText fontSize={20} color='#000'>3-OF-A-KIND:</CustomText>
-    <Br />
-    <Br />
-    - When you roll 3-of-a-kind, those 3 dice still act as your third roll.
-  </CustomText>
-);
-
 // export const QuestionsAndRules = () => (
 //   <CustomText fontSize={18}>
 //     <Bold fontSize={24}>QUESTIONS & RULES</Bold>
@@ -583,73 +665,3 @@ add it to your points pile.
 //     - You’re allowed to look at the scoreboard at any time.
 //   </CustomText>
 // );
-
-export const TeamDardz = () => (
-  <CustomText fontSize={18} color='#000'>
-    <Bold fontSize={24} color='#000'>TEAM DARDZ</Bold>
-    <Br />
-    <Br />
-    If you have an even amount of players, pair up in teams of 2. Sit across from your teammate so you aren’t next to each other. All the rules are the same, except for a few small tweaks.
-    <Br />
-    <Br />
-    Each round is a race to get 20 total cards between you and your teammate. It doesn’t matter which teammate has the cards, you just need 20 between the 2 of you. The team who gets 20 cards first wins the round and gets +10 points. Then add both teammates points together.
-    <Br />
-    <Br />
-    Only play action cards in your own hand, not your partner’s hand. As for the <Italic color='#000'>Lucky Loser</Italic>roll, if your team ends with 6 or less total cards between both players, your team gets 1 Lucky Loser roll. Use both players hands during the Bonus Roll. If your team wins a round, choose which player rolls first in the next round.
-    <Br />
-    <Br />
-    If you have an odd amount of players and still want to play teams, the solo person wins a round with 10 cards in their points pile. At the end of a round, double the points in the solo players points pile.
-  </CustomText>
-);
-
-export const DrinkingDardz = () => (
-  <CustomText fontSize={18} color='#000'>
-    <Bold fontSize={24} color='#000'>DRINKING DARDZ</Bold>
-    <Br />
-    <Br />
-    <Bold fontSize={20} color='#000'>RECIPE</Bold>
-    <Br />
-    Make sure and try out our world famous cocktail, <BoldItalic color='#000'>The Dardy</BoldItalic>: 1.5 shots of Bacardi Rum, a splash of strawberry lemonade, a splash of orange juice, a splash of soda water, a dash of grenadine, and garnished with a fresh lemon and lime. Give it a soft shake like you’re getting ready to roll some dice, and then enjoy it like a true playa.
-    <Br />
-    <Br />
-
-    <Bold fontSize={20} color='#000'>DRINKING RULES</Bold>
-    <Br />
-    You’ll have to get creative and make up some of your own drinking rules, but here are a few to get you started.
-    <Br />
-    <Br />
-    - When you get <Italic color='#000'>“skunked”</Italic>by missing on all 3 of your rolls, you drink.
-    <Br />
-    <Br />
-    - When you <Italic color='#000'>“clean ‘em up”</Italic>by adding all of your cards to your points pile on the bonus roll, everyone else drinks.
-    <Br />
-    <Br />
-    - When you play the <Italic color='#000'>Clock</Italic>, everyone drinks.
-    <Br />
-    <Br />
-    - When you get a <Italic color='#000'>Skull,</Italic>you drink.
-    <Br />
-    <Br />
-    - When you guess right on the <Italic color='#000'>Jackpot,</Italic>everyone drinks. When you guess wrong on the <Italic color='#000'>Jackpot,</Italic>you drink.
-    <Br />
-    <Br />
-    - When you lose a <Italic color='#000'>Roll-Off,</Italic>you drink.
-    <Br />
-    <Br />
-    - When you get points from <Italic color='#000'>Boost ‘em,</Italic>you drink.
-    <Br />
-    <Br />
-    - When you lose points from <Italic color='#000'>Bunk ‘em,</Italic>you drink.
-    <Br />
-    <Br />
-    - When you rolls Snake Eyes, everyone does a full cheers with eye contact, a nice clank, and then everyone drinks.
-    <Br />
-    <Br />
-    - When you roll and a dice falls off the table, you drink.
-    <Br />
-    <Br />
-
-    It goes without saying to be safe, and don’t be a dummy…but have fun playing drinking DARDZ!
-
-  </CustomText>
-);
