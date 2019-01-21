@@ -18,7 +18,7 @@ class Autocomplete extends Component {
       playerNameExists: false,
       newPlayer: ''
     };
-  }
+  };
 
   addNewPlayer = (newPlayer) => {
     const name = typeof newPlayer === 'string'
@@ -27,8 +27,8 @@ class Autocomplete extends Component {
     if (this.props.game.players.size <= 8) {
       const playerNameExists = this.props.game.players
         .toJS()
-        .map(p => p.name)
-        .includes(name);
+        .map(p => p.PlayerName)
+        .includes(name.toUpperCase());
       if (playerNameExists) {
         this.setState({ playerNameExists: true });
       } else if (newPlayer !== '') {
@@ -38,8 +38,17 @@ class Autocomplete extends Component {
     }
   };
 
+  handlePlayerAdd = (player) => {
+    this.props.removePlayerFromSuggestions(player.PlayerID);
+    this.addNewPlayer(player);
+  };
+
   renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => { this.addNewPlayer(item) }}>
+    <TouchableOpacity
+      onPress={() => {
+        this.handlePlayerAdd(item);
+      }}
+    >
       <ListItem
         title={item.PlayerName}
         titleStyle={{
@@ -51,7 +60,7 @@ class Autocomplete extends Component {
         rightIcon={<View><Text style={{color: 'white'}}>+</Text></View>}
       />
     </TouchableOpacity>
-  )
+  );
 
   keyExtractor = (item, index) => `list-item-${index}`
 
@@ -63,15 +72,18 @@ class Autocomplete extends Component {
         renderItem={this.renderItem}
       />
     );
-  }
+  };
 
   handleChange = (newPlayer) => {
-    this.props.filterSavedPlayers(newPlayer);
     if (newPlayer === '') {
-      this.setState({ playerNameExists: false });
+      // Explicitly set playerNameExists to false to reset Input
+      // errorMessage if it had fired
+      this.setState({ playerNameExists: false, newPlayer });
+    } else {
+      this.setState({ newPlayer });
     }
-    this.setState({ newPlayer });
-  }
+    this.props.filterSavedPlayers(newPlayer);
+  };
 
   render() {
     const { newPlayer } = this.state;

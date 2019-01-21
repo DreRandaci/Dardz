@@ -21,9 +21,11 @@ class CreateGame extends Component {
       usedSwatchIds: [],
       game: new GameRecord(),
       playerNameSearch: '',
+      // savedPlayers is mutated throughout the filtering flow
       savedPlayers: [],
       searchingSavedPlayers: false
     }
+    // _savedPlayers is complete list of saved players for resetting
     this._savedPlayers = [];
   }
 
@@ -52,33 +54,6 @@ class CreateGame extends Component {
     }
   }
 
-  addNewPlayer = (newPlayer) => {
-    const defaults = {
-      Swatch: this.getRandomSwatch(),
-      Score: 0
-    };
-    // Create the standard player object based off of a new or existing player
-    const player = typeof newPlayer === 'string'
-      ? new Object({
-          PlayerName: newPlayer.toUpperCase(),
-          IsUser: 0,
-          ...defaults
-        })
-      : new Object({
-          PlayerName: newPlayer.PlayerName.toUpperCase(),
-          ...defaults,
-          ...newPlayer
-        })
-    this.setState({
-      game: this.state.game.updateIn(
-        ['players'], arr => arr.concat([player])
-      ),
-      newPlayer: '',
-      playerNameExists: false,
-      searchingSavedPlayers: false
-    });
-  }
-
   getRandomSwatch = () => {
     // Recursively generate a random swatch color for new player names
     const { usedSwatchIds } = this.state;
@@ -93,16 +68,26 @@ class CreateGame extends Component {
     }
   }
 
-  removePlayer = playerName => {
+  removePlayer = (player) => {
     const { game } = this.state;
     const updatedPlayers = game.players.filter(
-      player => player.PlayerName !== playerName
+      _player => player.PlayerName !== _player.PlayerName
     );
-    this.setState(() => ({
-      game: game.updateIn(
-        ['players'], () => updatedPlayers
-      )
-    }));
+    if (player.PlayerID) {
+      // If this is a saved player, add them back to the list on state
+      this.setState(() => ({
+        game: game.updateIn(
+          ['players'], () => updatedPlayers
+        ),
+        savedPlayers: [...this.state.savedPlayers, player]
+      }));
+    } else {
+      this.setState(() => ({
+        game: game.updateIn(
+          ['players'], () => updatedPlayers
+        )
+      }));
+    }
   };
 
   createGame = () => {
@@ -112,34 +97,75 @@ class CreateGame extends Component {
 
   toggleModal = () => {
     this.setState({ instructionsOpen: !this.state.instructionsOpen });
-  }
+  };
+
+  addNewPlayer = (newPlayer) => {
+    const { game } = this.state;
+    const defaults = {
+      Swatch: this.getRandomSwatch(),
+      Score: 0
+    };
+    // Create the standard player object based off of a new or existing player
+    const player = typeof newPlayer === 'string'
+      ? new Object({
+        PlayerName: newPlayer.toUpperCase(),
+        IsUser: 0,
+        ...defaults
+      })
+      : new Object({
+        PlayerName: newPlayer.PlayerName.toUpperCase(),
+        ...defaults,
+        ...newPlayer
+      })
+    this.setState({
+      game: game.updateIn(
+        ['players'], arr => arr.concat([player])
+      ),
+      newPlayer: '',
+      playerNameExists: false,
+      searchingSavedPlayers: false
+    });
+  };
 
   filterSavedPlayers = (search) => {
-    // TODO: filter out the savedPlayers that have been added to the game.
+    const { savedPlayers, game } = this.state;
     if (search !== '') {
-      const { savedPlayers } = this.state;
       const filteredPlayers =
         savedPlayers.filter(player => (
             player.PlayerName.indexOf(search.toUpperCase()) > -1
           )
         );
-      if (filteredPlayers.length) {
-        this.setState({
-          savedPlayers: filteredPlayers,
-          searchingSavedPlayers: false
-        });
-      }
-    } else {
       this.setState({
-        savedPlayers: this._savedPlayers,
+        savedPlayers: filteredPlayers,
+        searchingSavedPlayers: false
+      });
+    } else {
+      const gamePlayers = this._savedPlayers.filter(player => {
+          return !game.players.map(p => p.PlayerName).includes(player.PlayerName)
+        }
+      );
+      const currentFilteredPlayers = gamePlayers.filter(player => (
+        player.PlayerName.indexOf(search.toUpperCase()) > -1
+      ));
+      this.setState({
+        savedPlayers: currentFilteredPlayers,
         searchingSavedPlayers: false
       });
     }
-  }
+  };
+
+  removePlayerFromSuggestions = (playerID) => {
+    const filteredPlayers = this.state.savedPlayers.filter(player => (
+      player.PlayerID !== playerID
+    ));
+    this.setState({
+      savedPlayers: filteredPlayers,
+      searchingSavedPlayers: false
+    });
+  };
 
   render() {
     const { instructionsOpen, game, searchingSavedPlayers } = this.state;
-    // console.log(game)
     const RemovePlayerIcon = ({ player }) => (
       <TouchableOpacity onPress={() => this.removePlayer(player)}>
         <Icon type="entypo" name="cross" color="#fff" size={32} />
@@ -160,7 +186,7 @@ class CreateGame extends Component {
               <View key={`playerSwatch-${index}`}>
                 <PlayerSwatch
                   playerName={player.PlayerName}
-                  rightElement={<RemovePlayerIcon player={player.PlayerName} />}
+                  rightElement={<RemovePlayerIcon player={player} />}
                   swatch={player.Swatch.swatch}
                 />
               </View>
@@ -172,6 +198,7 @@ class CreateGame extends Component {
                     addNewPlayer={this.addNewPlayer}
                     data={this.state.savedPlayers}
                     filterSavedPlayers={this.filterSavedPlayers}
+                    removePlayerFromSuggestions={this.removePlayerFromSuggestions}
                   />
               </View>
             }
