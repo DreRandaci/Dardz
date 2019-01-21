@@ -71,9 +71,6 @@ expo build:android
 
 - [X] When you click ‘start game’ the first time you use the app, an instruction window should pop up that says, “Click on a player’s name to add points to their score.” Then maybe a button to close the window that says ‘Ok’.
 
-
-<!-- - [] The `Player Stats` should be a list ranked by how many times a player has won. It should list ‘games played’ and ‘games won’. You should be able to click on a player and see how many times they’ve gotten each place, 1-8. You should also be able to edit the players name. -->
-
 - [X] Alphabitized list of players where you click on a player and it goes to a second screen with "games played" and number of times they've gotten 1st-8th. Players should be searchable
 
 - [X] Revise the splash screen when you click ’start game’ to say, “Click on a players name to change their score. Use the +/- and = buttons."
