@@ -18,7 +18,7 @@ import {
   InsertIntoGame,
   InsertIntoPlayer,
   InsertIntoPlayerGame
-} from '../../SQLiteScripts/Inserts';
+} from '../../database/Inserts';
 
 class ScoreBoard extends Component {
   constructor(props) {
@@ -81,40 +81,52 @@ class ScoreBoard extends Component {
 
   saveGame = () => {
     // Look at the CreateDatabase.js (schema) file for database layout
+    const { players } = this.props;
+    const numOfPlayers = players.size;
     return new Promise((resolve, reject) => {
       const { DatabaseConnection } = appContainer;
       DatabaseConnection.transaction(trans => {
-        // Insert a new game record to get the new gameID
-        trans.executeSql(InsertIntoGame, null, (webSql, gameResults) => {
+        // Insert a new game record to get the gameID
+        trans.executeSql(InsertIntoGame, [numOfPlayers],
+          (webSql, gameResults) => {
           const { insertId: gameID } = gameResults;
-          this.props.players
-            // Order the players by score to determine game placement
+          players
+            // Order the players by score to determine game placement. A 0 index in the array = 1st place, 1 index = 2nd place, etc.
             .sort((a, b) => b.Score - a.Score)
             .map((player, index) => {
-              const playerArgs = [player.PlayerName, 0];
-              /**
-                If there is a player.PlayerID, pluck it off and skip ahead to add a new PlayerGame record. Otherwise, create the new player in the DB for the insertID first.
+              const place = index + 1;
+              /*
+                Check if there is a player.PlayerID and determine if the player needs to be created in the db first
               */
-              trans.executeSql(InsertIntoPlayer, playerArgs, (webSql, playerResults) => {
-                const { insertId: playerID } = playerResults;
-                /*
-                  Because the players have been ordered by game standing,
-                  placement is simply each player's index in the array + 1
-                  (add 1 because of zero-based array indexing)
-                */
-                const place = index + 1;
-                const playerGameArgs = [playerID, gameID, place];
-                // Insert the PlayerGame record per player
+              const _playerId = player.PlayerID ? player.PlayerID : null
+              if (!_playerId) {
+                const playerArgs = [_playerId, player.PlayerName, 0];
+                trans.executeSql(InsertIntoPlayer, playerArgs, (webSql, playerResults) => {
+                  const { insertId: newPlayerID } = playerResults;
+                  const playerGameArgs = [
+                    newPlayerID, gameID, place, player.Score
+                  ];
+                  // Insert the PlayerGame record with the new playerID
+                  trans.executeSql(InsertIntoPlayerGame, playerGameArgs, (webSQL, playerGameResults) => {
+                    resolve({
+                      gameResults,
+                      playerResults,
+                      playerGameResults
+                    });
+                  });
+                }, (err) => console.log('InsertIntoPlayer ERROR:', err));
+              } else {
+                const playerGameArgs = [_playerId, gameID, place, player.Score];
+                // Insert the PlayerGame record with the existing _playerId
                 trans.executeSql(InsertIntoPlayerGame, playerGameArgs, (webSQL, playerGameResults) => {
                   resolve({
                     gameResults,
-                    playerResults,
                     playerGameResults
                   });
-                });
-              });
+                }, (err) => console.log('InsertIntoPlayerGame ERROR:', err));
+              }
             });
-        });
+          }, (err) => console.log('InsertIntoGame ERROR:', err));
       }, (err) => reject(err));
     });
   }
@@ -123,7 +135,6 @@ class ScoreBoard extends Component {
     const { alert } = Alert;
     const { players } = this.props;
     const scoresExist = players.some(player => player.Score > 0);
-    const splash =
     alert(
       'End Game', 'Would you like to repeat the game or start a new one?', [
       {

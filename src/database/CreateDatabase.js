@@ -10,7 +10,6 @@ const CreateUserTable = `
 CREATE TABLE IF NOT EXISTS User
 (
   UserID INTEGER PRIMARY KEY NOT NULL DEFAULT 1
-  , UserName TEXT NOT NULL DEFAULT "DardzUser"
   , IsFirstTimeUser INTEGER NOT NULL DEFAULT 1
   , UNIQUE(UserID)
 );`;
@@ -19,8 +18,8 @@ const CreateGameTable = `
 CREATE TABLE IF NOT EXISTS Game
 (
   GameID INTEGER PRIMARY KEY NOT NULL
-  , UserID NOT NULL DEFAULT 1
-  , FOREIGN KEY(UserID) REFERENCES User(UserID)
+  , DateCreated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+  , NumberOfPlayers INTEGER NOT NULL
   , UNIQUE(GameID)
 );`;
 
@@ -48,6 +47,7 @@ CREATE TABLE IF NOT EXISTS PlayerGame
   , PlayerID NOT NULL
   , GameID NOT NULL
   , ScoreID NOT NULL
+  , PlayerScore INTEGER NOT NULL
   , FOREIGN KEY(PlayerID) REFERENCES Player(PlayerID)
   , FOREIGN KEY(GameID) REFERENCES Game(GameID)
   , FOREIGN KEY(ScoreID) REFERENCES Score(ScoreID)
@@ -58,14 +58,14 @@ CREATE TABLE IF NOT EXISTS PlayerGame
 /******************* Default Records *******************/
 /*******************************************************/
 const InsertDefaultUserRecord = `
-INSERT INTO User (UserID, UserName, IsFirstTimeUser)
-SELECT NULL, "DefaultUser", 1
+INSERT INTO User (UserID)
+SELECT NULL
 WHERE NOT EXISTS (SELECT 1 FROM User WHERE UserID = 1);
 `;
 
 const InserDefaultGameRecord = `
-INSERT INTO Game (GameID, UserID)
-SELECT NULL, 1
+INSERT INTO Game (GameID, NumberOfPlayers)
+SELECT NULL, 6
 WHERE NOT EXISTS (SELECT 1 FROM Game WHERE GameID = 1);
 `;
 
@@ -121,7 +121,6 @@ export {
   CreateGameTable,
   CreatePlayerTable,
   CreateScoreTable,
-  // CreatePlayerScoreTable,
   CreatePlayerGameTable,
   InsertDefaultUserRecord,
   InserDefaultGameRecord,
