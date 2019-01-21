@@ -29,24 +29,47 @@ class ScoreBoard extends Component {
       playerToUpdate: {},
       instructionsOpen: false,
       // isFirstTimeUser is set on the global app state in the App entry point
-      showFirstTimeUserInstructions: this.props.isFirstTimeUser
+      // showFirstTimeUserInstructions: this.props.isFirstTimeUser
+      showFirstTimeUserInstructions: false
     };
+  }
+
+  componentDidMount = () => {
+    const { DatabaseConnection } = appContainer;
+    DatabaseConnection.transaction(trans => {
+      trans.executeSql('SELECT * From User', null, (webSql, { rows }) => {
+        console.log(rows._array[0])
+        const { IsFirstTimeUser } = rows._array[0];
+        this.setState({
+          showFirstTimeUserInstructions: IsFirstTimeUser === 1 ? true : false
+        })
+      });
+    }, (err) => console.log(err));
   }
 
   confirmFirstTimeUserInstructions = async () => {
     /*
       Set whether the user has used the app before to show/hide the helper overlay on first game creation
     */
-    try {
-      if (this.props.isFirstTimeUser) {
-        await AsyncStorage.setItem('isFirsTimeUser', JSON.stringify(false));
-        // Somehow i need to update the app state and cause a rerender... or do I? it might be working
-        appContainer.set('isFirstTimeUser', false);
-      }
-      this.setState({ showFirstTimeUserInstructions: false });
-    } catch (error) {
-      console.log({ error });
-    }
+    const { DatabaseConnection } = appContainer;
+    DatabaseConnection.transaction(trans => {
+      trans.executeSql('UPDATE User SET IsFirstTimeUser = 0', null, (webSql, { rows }) => {
+        this.setState({
+          showFirstTimeUserInstructions: false
+        });
+      });
+    }, (err) => console.log(err));
+
+    // try {
+    //   if (this.props.isFirstTimeUser) {
+    //     await AsyncStorage.setItem('isFirsTimeUser', JSON.stringify(false));
+    //     // Somehow i need to update the app state and cause a rerender... or do I? it might be working
+    //     appContainer.set('isFirstTimeUser', false);
+    //   }
+    //   this.setState({ showFirstTimeUserInstructions: false });
+    // } catch (error) {
+    //   console.log({ error });
+    // }
   }
 
   openCalculator = player => {
