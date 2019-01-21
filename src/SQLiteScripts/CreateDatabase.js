@@ -29,9 +29,7 @@ CREATE TABLE IF NOT EXISTS Player
 (
   PlayerID INTEGER PRIMARY KEY NOT NULL
   , PlayerName TEXT NOT NULL
-  , GamesPlayed INTEGER NOT NULL DEFAULT 0
   , IsUser INTEGER NOT NULL DEFAULT 0
-  , IsNewPlayer INTEGER NOT NULL DEFAULT 1
   , UNIQUE(PlayerID)
 );`;
 
@@ -42,17 +40,6 @@ CREATE TABLE IF NOT EXISTS Score
   , Place INTEGER NOT NULL
   , UNIQUE(ScoreID)
 );`;
-
-// const CreatePlayerScoreTable = `
-// CREATE TABLE IF NOT EXISTS PlayerScore
-// (
-//   PlayerScoreID INTEGER PRIMARY KEY NOT NULL
-//   , PlayerID NOT NULL
-//   , ScoreID NOT NULL
-//   , FOREIGN KEY(PlayerID) REFERENCES Player(PlayerID)
-//   , FOREIGN KEY(ScoreID) REFERENCES Score(ScoreID)
-//   , UNIQUE(PlayerScoreID)
-// );`;
 
 const CreatePlayerGameTable = `
 CREATE TABLE IF NOT EXISTS PlayerGame

@@ -86,7 +86,7 @@ export default class Calculator extends Component {
           return;
         }
         let newPlayerScore = eval(
-          selectedPlayer.score + selectedSymbol + inputAmount
+          selectedPlayer.Score + selectedSymbol + inputAmount
         );
         /*
           The player score should never be a negative number. If it is, just make it zero. The score range is set to 0-999.
@@ -124,15 +124,15 @@ export default class Calculator extends Component {
         <View
           style={[
             styles.displayContainer,
-            { backgroundColor: player.swatch.color }
+            { backgroundColor: player.Swatch.color }
           ]}
         >
           <View>
             <Text numberOfLines={1} style={styles.displayTextLeft}>
-              {player.name}
+              {player.PlayerName}
             </Text>
             <Text style={styles.subtext}>
-              {`current score: ${player.score}`}
+              {`current score: ${player.Score}`}
             </Text>
           </View>
           <Text style={styles.displayTextRight}>

@@ -7,7 +7,8 @@ export default (styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     paddingLeft: 24,
-    paddingRight: 20
+    paddingRight: 20,
+
   },
   backgroundImg: {
     paddingTop: 19,

@@ -56,14 +56,14 @@ class ScoreBoard extends Component {
   closeCalculator = (newPlayerScore = undefined) => {
     let { playerToUpdate, players } = this.state;
     /*
-      NOTE: `newPlayerScore` can equal "0", so a strict evaluation against `undefined` values is required.
+      NOTE: `newPlayerScore` can equal "0", so a strict evaluation against `undefined` is required.
     */
     if (newPlayerScore !== undefined) {
       players = players.update(
         players.findIndex((player) => {
-          return player.name === playerToUpdate.name;
+          return player.PlayerName === playerToUpdate.PlayerName;
         }), (player) => {
-          player.score = newPlayerScore;
+          player.Score = newPlayerScore;
           return player;
         }
       );
@@ -81,22 +81,30 @@ class ScoreBoard extends Component {
 
   saveGame = () => {
     // Look at the CreateDatabase.js (schema) file for database layout
-    /**
-     TODO: to handle updates, check if the player object has an ID on it. This would mean they have played before and thus should be updated instead of inserted/created
-    **/
     return new Promise((resolve, reject) => {
       const { DatabaseConnection } = appContainer;
       DatabaseConnection.transaction(trans => {
+        // Insert a new game record to get the new gameID
         trans.executeSql(InsertIntoGame, null, (webSql, gameResults) => {
           const { insertId: gameID } = gameResults;
           this.props.players
-            .sort((a, b) => b.score - a.score)
+            // Order the players by score to determine game placement
+            .sort((a, b) => b.Score - a.Score)
             .map((player, index) => {
-              const playerArgs = [player.name, 0, 0, 1];
+              const playerArgs = [player.PlayerName, 0];
+              /**
+                If there is a player.PlayerID, pluck it off and skip ahead to add a new PlayerGame record. Otherwise, create the new player in the DB for the insertID first.
+              */
               trans.executeSql(InsertIntoPlayer, playerArgs, (webSql, playerResults) => {
                 const { insertId: playerID } = playerResults;
+                /*
+                  Because the players have been ordered by game standing,
+                  placement is simply each player's index in the array + 1
+                  (add 1 because of zero-based array indexing)
+                */
                 const place = index + 1;
                 const playerGameArgs = [playerID, gameID, place];
+                // Insert the PlayerGame record per player
                 trans.executeSql(InsertIntoPlayerGame, playerGameArgs, (webSQL, playerGameResults) => {
                   resolve({
                     gameResults,
@@ -113,6 +121,9 @@ class ScoreBoard extends Component {
 
   endGame = () => {
     const { alert } = Alert;
+    const { players } = this.props;
+    const scoresExist = players.some(player => player.Score > 0);
+    const splash =
     alert(
       'End Game', 'Would you like to repeat the game or start a new one?', [
       {
@@ -123,8 +134,6 @@ class ScoreBoard extends Component {
       {
         text: 'New Game',
         onPress: () => {
-          const { players } = this.props;
-          const scoresExist = players.some(player => player.score > 0);
           if (scoresExist) {
             alert(
               'Save?', 'Would you like to save the game?', [
@@ -152,25 +161,31 @@ class ScoreBoard extends Component {
         },
         style: 'destructive'
       },
-      { text: 'Repeat Game',
+      {
+        text: 'Repeat Game',
         onPress: () => {
-          const { players } = this.props;
-          const scoresExist = players.some(player => player.score > 0);
           if (scoresExist) {
             alert(
               'Save?', 'Would you like to save the game?', [
                 {
                   text: 'Save',
                   onPress: () => {
-                    this.saveGame();
-                    this.props.navigation.navigate('CreateGame', { repeatGame: true });
+                    this.saveGame().then(res => {
+                      this.props.navigation.navigate(
+                        'CreateGame',
+                        { repeatGame: true }
+                      );
+                    }).catch(err => console.log(err))
                   },
                   style: 'cancel'
                 },
                 {
                   text: 'Don\'t Save',
                   onPress: () => {
-                    this.props.navigation.navigate('CreateGame', { repeatGame: true });
+                    this.props.navigation.navigate(
+                      'CreateGame',
+                      { repeatGame: true }
+                    );
                   },
                   style: 'destructive'
                 }
@@ -205,15 +220,15 @@ class ScoreBoard extends Component {
           imgStyles={styles.logoImg}
         />
         <ScrollView style={styles.playersContainer}>
-          {players.sort((a, b) => b.score - a.score).map((player, index) => (
+          {players.sort((a, b) => b.Score - a.Score).map((player, index) => (
             <TouchableOpacity
               key={index}
               onPress={() => { this.openCalculator(player) }}
             >
               <PlayerSwatch
-                playerName={player.name}
-                rightElement={player.score}
-                swatch={player.swatch.swatch}
+                playerName={player.PlayerName}
+                rightElement={player.Score}
+                swatch={player.Swatch.swatch}
               />
             </TouchableOpacity>
           ))}

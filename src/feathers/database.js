@@ -9,7 +9,6 @@ export default app => {
     dbConnection: SQLite.openDatabase('dardz.db')
   }, {});
 
-  // const Database = SQLite.openDatabase('dardz.db');
   appContainer.Database = Database;
   app.set('Database', Database);
 

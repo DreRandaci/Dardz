@@ -10,6 +10,7 @@ export default class Stats extends Component {
     super(props);
     this.state = {
       stats: {
+        gamesPlayed: 0,
         1: 0,
         2: 0,
         3: 0,
@@ -30,11 +31,15 @@ export default class Stats extends Component {
         SELECT * From PlayerGame WHERE PlayerID = ?`
         , [player.PlayerID]
         , (webSql, { rows }) => {
-          const stats = rows._array.map(({ ScoreID }) => {
+          rows._array.map((player) => {
             const { stats } = this.state;
-            this.setState({ stats: {
-              ...stats,
-              [ScoreID]: stats[ScoreID] + 1 }
+            const { ScoreID } = player;
+            this.setState({
+              stats: {
+                ...stats,
+                gamesPlayed: stats.gamesPlayed + 1,
+                [ScoreID]: stats[ScoreID] + 1
+              }
             });
         });
       });
@@ -54,7 +59,7 @@ export default class Stats extends Component {
           </View>
           <StyledListItem
             title={'Games Played'}
-            badgeVal={player.GamesPlayed}
+            badgeVal={this.state.stats.gamesPlayed}
             badgeColor={badgeColor}
           />
           <StyledListItem
