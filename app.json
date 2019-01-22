@@ -10,7 +10,7 @@
     "primaryColor": "#000000",
     "icon": "./src/assets/app_icons/main.png",
     "ios": {
-      "bundleIdentifier": "com.pxlpotion.dardz",
+      "bundleIdentifier": "com.dardz",
       "buildNumber": "1.0.0",
       "icon": "./src/assets/app_icons/App_Store_Icon_no_alpha.png",
       "supportsTablet": false,
@@ -22,7 +22,7 @@
       }
     },
     "android": {
-      "package": "com.pxlpotion.dardz",
+      "package": "com.dardz",
       "versionCode": 1,
       "icon": "./src/assets/app_icons/main.png",
       "adaptiveIcon": {
