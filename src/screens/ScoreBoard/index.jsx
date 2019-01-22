@@ -38,7 +38,6 @@ class ScoreBoard extends Component {
     const { DatabaseConnection } = appContainer;
     DatabaseConnection.transaction(trans => {
       trans.executeSql('SELECT * From User', null, (webSql, { rows }) => {
-        console.log(rows._array[0])
         const { IsFirstTimeUser } = rows._array[0];
         this.setState({
           showFirstTimeUserInstructions: IsFirstTimeUser === 1 ? true : false
@@ -59,17 +58,6 @@ class ScoreBoard extends Component {
         });
       });
     }, (err) => console.log(err));
-
-    // try {
-    //   if (this.props.isFirstTimeUser) {
-    //     await AsyncStorage.setItem('isFirsTimeUser', JSON.stringify(false));
-    //     // Somehow i need to update the app state and cause a rerender... or do I? it might be working
-    //     appContainer.set('isFirstTimeUser', false);
-    //   }
-    //   this.setState({ showFirstTimeUserInstructions: false });
-    // } catch (error) {
-    //   console.log({ error });
-    // }
   }
 
   openCalculator = player => {
