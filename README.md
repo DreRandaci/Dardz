@@ -91,11 +91,11 @@ expo build:android
 
 - [] Check layouts on older iPhone devices
 
-- [] Border around game Images
+- [X] Border around game Images
 
 - [] when selecting a autocomplete name, you have to click twice. should click once
 
-- [] cache game setup images
+- [X] cache game setup images
 
 
 ### *Known Bugs*
