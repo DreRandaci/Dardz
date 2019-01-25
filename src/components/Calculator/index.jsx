@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { CalcButton } from '../CalcButton';
-import Text from '../TextWithAppFont';
+import TextWithAppFont from '../TextWithAppFont';
 import styles from './styles';
 
 export default class Calculator extends Component {
@@ -128,16 +128,16 @@ export default class Calculator extends Component {
           ]}
         >
           <View>
-            <Text numberOfLines={1} style={styles.displayTextLeft}>
+            <TextWithAppFont numberOfLines={1} style={styles.displayTextLeft}>
               {player.PlayerName}
-            </Text>
-            <Text style={styles.subtext}>
+            </TextWithAppFont>
+            <TextWithAppFont style={styles.subtext}>
               {`current score: ${player.Score}`}
-            </Text>
+            </TextWithAppFont>
           </View>
-          <Text style={styles.displayTextRight}>
+          <TextWithAppFont style={styles.displayTextRight}>
             {selectedSymbol || ''}{inputAmount}
-          </Text>
+          </TextWithAppFont>
         </View>
         <View style={styles.inputContainer}>{this.renderInputButtons()}</View>
       </View>

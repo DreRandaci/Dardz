@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   Alert,
   View,
-  AsyncStorage } from 'react-native';
+  Dimensions } from 'react-native';
 import { Overlay } from 'react-native-elements';
 import styles from './styles';
 import { appContainer, Subscribe } from '../../contexts';
@@ -147,14 +147,14 @@ class ScoreBoard extends Component {
     const { players } = this.props;
     const scoresExist = players.some(player => player.Score > 0);
     alert(
-      'End Game', 'Would you like to repeat the game or start a new one?', [
+      'End Game', null, [
       {
         text: 'Cancel',
         onPress: () => {},
         style: 'default'
       },
       {
-        text: 'New Game',
+        text: 'End Game',
         onPress: () => {
           if (scoresExist) {
             alert(
@@ -262,6 +262,7 @@ class ScoreBoard extends Component {
           toggleModal={this.toggleInstructionsModal}
         />
         <Overlay
+          width={Dimensions.get('screen').width - 25}
           isVisible={showCalculator}
           overlayStyle={{ padding: 0 }}
           windowBackgroundColor='#000'
@@ -278,9 +279,11 @@ class ScoreBoard extends Component {
           height={275}
           overlayStyle={{ padding: 0 }}
           windowBackgroundColor='#000'
-          onBackdropPress={() => this.setState({
-            showFirstTimeUserInstructions: false
-          })}
+          onBackdropPress={() => {
+            this.setState({
+              showFirstTimeUserInstructions: false
+            });
+          }}
         >
           <View style={{ backgroundColor: '#000', alignItems: 'center',
             justifyContent: 'center', flex: 1 }}
@@ -301,11 +304,11 @@ class ScoreBoard extends Component {
             </View>
           </View>
         </Overlay>
-        {!showFirstTimeUserInstructions &&
+        {/* {!showFirstTimeUserInstructions && */}
           <View style={{ marginBottom: 35 }}>
             <Timer />
           </View>
-        }
+        // }
       </ScrollView>
     );
   }

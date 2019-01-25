@@ -2,47 +2,47 @@ import React from 'react';
 import {
   View,
   Image,
-  Dimensions,
-  TouchableOpacity,
   ScrollView } from 'react-native';
 import CustomText from '../../components/TextWithAppFont';
 import { Bold, BoldItalic, Italic, Br } from '../../components/TextWithAppFont';
 
 export const GameSetupImages = () => (
-      <View style={{
-        flex: 1
-      }}>
-        <ScrollView
-          contentContainerStyle={{
-            alignItems: 'center',
-            flex: 0,
-            marginTop: 50,
-            justifyContent: 'center'
-          }}
-          maximumZoomScale={5}
-        >
-          <Image
-            style={{
-              flex: 1,
-              width: 300,
-              height: 300
-            }}
-            source={require('../../assets/Instruction_PNGs/CardLayout2.png')}
-            resizeMode='cover'
-          />
-          <Image
-            style={{
-              flex: 1,
-              width: 300,
-              height: 300,
-              marginTop: 20
-            }}
-            source={require('../../assets/Instruction_PNGs/GameSetUp2.png')}
-            resizeMode='cover'
-          />
-        </ScrollView>
-      </View>
-    );
+  <View style={{
+    flex: 1
+  }}>
+    <ScrollView
+      contentContainerStyle={{
+        alignItems: 'center',
+        flex: 0,
+        marginTop: 50,
+        marginBottom: 50,
+        justifyContent: 'center'
+      }}
+      maximumZoomScale={5}
+    >
+      <Image
+        style={{
+          flex: 1,
+          width: 320,
+          height: 300
+        }}
+        source={require('../../assets/Instruction_PNGs/CardLayout2.png')}
+        resizeMode='cover'
+      />
+      <Image
+        style={{
+          flex: 1,
+          width: 300,
+          height: 300,
+          marginTop: 20,
+          marginBottom: 50
+        }}
+        source={require('../../assets/Instruction_PNGs/GameSetUp2.png')}
+        resizeMode='cover'
+      />
+    </ScrollView>
+  </View>
+);
 
 export const Instructions = ({ toggleModal }) => (
   <CustomText fontSize={18} color='#000'>
@@ -64,16 +64,13 @@ export const Instructions = ({ toggleModal }) => (
     <Br />
     DARDZ consists of 3 dice and 90 cards. There are 6 of each number 1-12, and 3 of all 6 action cards. Each card has a point value listed at the bottom the card.
     <Br />
-    <Br />
-    <TouchableOpacity
-      onPress={() => {
-        toggleModal('imagesFromLink');
-      }}
+    <CustomText
+      onPress={() => { toggleModal('imagesFromLink'); }}
+      fontSize={18}
+      color='blue'
     >
-      <CustomText fontSize={18} color='blue'>
-        (See card layout images.)
-      </CustomText>
-    </TouchableOpacity>
+      (See card layout images.)
+    </CustomText>
     <Br />
     <Br />
 
@@ -82,16 +79,13 @@ export const Instructions = ({ toggleModal }) => (
     <Br />
     Shuffle ALL the cards and deal each player 3 cards, face up. Place the remaining cards face down to create the draw pile. Do this to start each round. Your points pile is kept right next to you, face down.
     <Br />
-    <Br />
-    <TouchableOpacity
-      onPress={() => {
-        toggleModal('imagesFromLink');
-      }}
+    <CustomText
+      onPress={() => { toggleModal('imagesFromLink'); }}
+      fontSize={18}
+      color='blue'
     >
-      <CustomText fontSize={18} color='blue'>
-        (See game set up image.)
-      </CustomText>
-    </TouchableOpacity>
+      (See game set up image.)
+    </CustomText>
     <Br />
     <Br />
 
@@ -109,7 +103,7 @@ export const Instructions = ({ toggleModal }) => (
     1. Play all your action cards right away, even if you draw one in the middle of your turn.
     <Br />
     <Br />
-    2. First roll, roll 1 die. Any player with this number in their hand adds it to their points pile and draws a
+    2. First roll, roll 1 die. There's no choice on the first roll. Any player with this number in their hand adds it to their points pile and draws a
     new card. (If you have multiples of the same number in your hand, add them all to your points pile at the
     same time.)
     <Br />
@@ -138,7 +132,7 @@ export const Instructions = ({ toggleModal }) => (
     <Br />
     <Br />
     1. When any player gets 10 cards in their points pile the round is immediately over. That player has won
-    the round and gets +10 points.
+    the round and gets +10 points. (Announce when you get 10 cards.)
     <Br />
     <Br />
     2. Each player adds up the point values on the cards in their points pile, not the cards left in their hand. Add
@@ -228,7 +222,7 @@ export const QuestionsAndRules = () => (
     <Br />
     - Start the Bonus Roll with 3 cards in your hand.
     <Br />
-    - If you drew an action card after your third roll, play it first but still don’t draw a new card.
+    - If you drew an action card after your third roll, play it first but still don’t draw a new card. Then continue your bonus roll.
     <Br />
     <Br />
 
@@ -260,6 +254,10 @@ and nobody gets the +10 points.
     <Br />
     - If a player reaches 10 cards at the same time another player reaches
     11 or 12 cards, the player with the most cards wins the round.
+    <Br />
+    - If you draw the same number you just added to your points pile, nothing happens.
+    <Br />
+    - If you get 10 cards in your points pile first but don't announce it, the player who announces it first gets the +10 points.
     <Br />
     <Br />
 

@@ -3,7 +3,6 @@ const defaultGame = JSON.stringify({
   players: [{}]
 });
 
-
 /******************* Tables *******************/
 /**********************************************/
 const CreateUserTable = `

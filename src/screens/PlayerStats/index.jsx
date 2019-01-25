@@ -27,6 +27,23 @@ class PlayerStats extends Component {
   }
 
   componentDidMount = () => {
+    this.getPlayers();
+  }
+
+  handleTextChange = (search) => {
+    if (search !== '') {
+      const { players } = this.state;
+      const filteredPlayers =
+        players.filter(player => player.PlayerName.indexOf(search.toUpperCase()) > -1);
+      if (filteredPlayers.length) {
+        this.setState({ players: filteredPlayers, search });
+      }
+    } else {
+      this.setState({ players: this._players });
+    }
+  }
+
+  getPlayers = () => {
     const { DatabaseConnection } = appContainer;
     DatabaseConnection.transaction(trans => {
       trans.executeSql('SELECT * From Player', null, (webSql, { rows }) => {
@@ -43,19 +60,6 @@ class PlayerStats extends Component {
         this.setState({ players: playersWithColors });
       });
     }, (err) => console.log(err));
-  }
-
-  handleTextChange = (search) => {
-    if (search !== '') {
-      const { players } = this.state;
-      const filteredPlayers =
-        players.filter(player => player.PlayerName.indexOf(search.toUpperCase()) > -1);
-      if (filteredPlayers.length) {
-        this.setState({ players: filteredPlayers, search });
-      }
-    } else {
-      this.setState({ players: this._players });
-    }
   }
 
   render() {
@@ -86,10 +90,16 @@ class PlayerStats extends Component {
               placeholder='Search'
             />)}
           {players.length ? (
-            players.map((player, index) => {
+            players.sort((a, b) => {
+              if (a.PlayerName < b.PlayerName) { return -1; }
+              if (a.PlayerName > b.PlayerName) { return 1; }
+              return 0;
+            }).map((player, index) => {
               return (
                 <TouchableOpacity key={index} onPress={() => {
-                  this.props.navigation.navigate('Stats', { player });
+                  this.props.navigation.navigate('Stats',
+                    { player, refreshPlayers: this.getPlayers }
+                  );
                 }}>
                   <ListItem
                     style={{
@@ -99,7 +109,7 @@ class PlayerStats extends Component {
                       paddingTop: 12,
                     }}
                     containerStyle={{
-                      backgroundColor: player.Color,
+                      backgroundColor: '#000',
                     }}
                     titleStyle={{
                       color: '#fff',

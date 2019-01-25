@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { gray999 } from '../../colors';
 import Logo from '../../components/LogoHeader';
@@ -68,14 +68,16 @@ export default class HowTo extends Component {
         />
         <SplashButton
           asset={WatchVideo}
-          onPress={() => this.props.navigation.navigate('VideoPlayer')}
+          // onPress={() => this.props.navigation.navigate('VideoPlayer')}
+          onPress={() => {
+            Linking.openURL('https://www.youtube.com/embed/xO1bLOgwO04?rel=0&autoplay=0&showinfo=0&controls=0')
+          }}
         />
         <InstructionsModal
           instructionsOpen={instructionsOpen}
           instructionSet={this.state.instructionSet}
           closeModal={this.closeModal}
           toggleModal={this.toggleModal}
-          // navigation={this.props.navigation}
       />
         <View style={styles.backChev}>
           <TouchableOpacity

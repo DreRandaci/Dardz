@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { ListItem, Icon } from 'react-native-elements'
 import { appContainer } from '../../contexts';
 import CustomText from '../../components/TextWithAppFont';
 import { Bold } from '../../components/TextWithAppFont';
+import { gray999 } from '../../colors';
 
 export default class Stats extends Component {
   constructor(props) {
@@ -21,6 +22,40 @@ export default class Stats extends Component {
         8: 0
       }
     }
+  }
+
+  deletePlayer = (id) => {
+    const { alert } = Alert;
+    alert(
+      'Delete Player', null, [
+        {
+          text: 'Cancel',
+          onPress: () => { },
+          style: 'default'
+        },
+        {
+          text: 'Delete Player',
+          onPress: () => {
+            const { DatabaseConnection } = appContainer;
+            DatabaseConnection.transaction(trans => {
+              trans.executeSql(`
+                DELETE From PlayerGame WHERE PlayerID = ?`
+                , [id]
+                , (webSql, { rows }) => {
+                  trans.executeSql(`
+                DELETE From Player WHERE PlayerID = ?`
+                    , [id]
+                    , (webSql, { rows }) => {});
+                });
+            }, (err) => console.log('ERROR DELETING PLAYER: ', err));
+            const refresh = this.props.navigation.getParam('refreshPlayers');
+            refresh();
+            this.props.navigation.navigate('PlayerStats');
+          },
+          style: 'destructive'
+        }
+      ]);
+
   }
 
   componentDidMount = () => {
@@ -102,12 +137,32 @@ export default class Stats extends Component {
             badgeVal={this.state.stats[8]}
             badgeColor={badgeColor}
           />
-          <View style={{ alignSelf: 'center', marginTop: 40 }}>
+          <View style={{
+            flex: 1,
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            flexDirection: 'row',
+            margin: 15,
+            paddingBottom: 30
+          }}>
             <TouchableOpacity
               onPress={() => this.props.navigation.goBack()}
             >
+              <Icon
+                name="chevron-left"
+                type="feather"
+                color={gray999}
+                size={40}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => { this.deletePlayer(player.PlayerID) }}
+              style={{
+                paddingTop: 10
+              }}
+            >
               <CustomText>
-                <Bold>BACK</Bold>
+                <Bold color='#E95D4E'>DELETE PLAYER</Bold>
               </CustomText>
             </TouchableOpacity>
           </View>
