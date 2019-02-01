@@ -107,6 +107,7 @@ class ScoreBoard extends Component {
             return score;
           });
 
+            // TODO: this isnt implemented in the actual save functionality, merely for testing
             const sortedToJs = sortedPlayers.toJS();
             const playerPlaces = sortedPlayers.map((player, index) => {
               const place = index + 1;
@@ -125,7 +126,6 @@ class ScoreBoard extends Component {
               player.Place = place;
               return player;
             });
-
             console.log(playerPlaces.toJS())
 
             sortedPlayers.map((player, index) => {
