@@ -104,14 +104,41 @@ class ScoreBoard extends Component {
           // Order the players by score to determine game placement. A 0 index in the array = 1st place, 1 index = 2nd place, etc.
           const sortedPlayers = players.sort((a, b) => {
             const score = b.Score - a.Score;
-            // if (score = 0) {
-            //   b.Tied = true;
-            //   a.Tied = true;
-            // }
             return score;
           });
+
+            const sortedToJs = sortedPlayers.toJS();
+            const playerPlaces = sortedPlayers.map((player, index) => {
+              const place = index + 1;
+              if (index > 0) {
+                const prevScore = sortedToJs[index - 1].Score;
+                if (prevScore === player.Score) {
+                  let prevPlayerPlace = sortedToJs[index - 1].Place;
+                  if (sortedToJs.length > 3 && index > 1) {
+                    prevPlayerPlace = prevPlayerPlace - 1;
+                  }
+                  // If 4 or more players are being checked, you have to offset the index by 1 (two people are tied for 1st, that means that the 2nd place person is really at index 3 and they wont hit the -1 logic to compinsate)
+                  player.Place = prevPlayerPlace;
+                  return player;
+                }
+              }
+              player.Place = place;
+              return player;
+            });
+
+            console.log(playerPlaces.toJS())
+
             sortedPlayers.map((player, index) => {
               const place = index + 1;
+              if (index > 0) {
+                const prevScore = sortedPlayers.toJS()[index-1].Score;
+                if(prevScore === player.Score) {
+                  sortedPlayers.toJS()[index - 1].Place
+                  player.PlayerName
+                } else {
+                  player.Place = place;
+                }
+              }
               /*
                 Check if there is a player.PlayerID and determine if the player needs to be created in the db first
               */
