@@ -103,8 +103,13 @@ class ScoreBoard extends Component {
           const { insertId: gameID } = gameResults;
           // Order the players by score to determine game placement. A 0 index in the array = 1st place, 1 index = 2nd place, etc.
           const sortedPlayers = players.sort((a, b) => {
-              return b.Score - a.Score;
-            });
+            const score = b.Score - a.Score;
+            // if (score = 0) {
+            //   b.Tied = true;
+            //   a.Tied = true;
+            // }
+            return score;
+          });
             sortedPlayers.map((player, index) => {
               const place = index + 1;
               /*
