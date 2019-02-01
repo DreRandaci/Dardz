@@ -21,6 +21,7 @@ class Autocomplete extends Component {
   };
 
   addNewPlayer = (newPlayer) => {
+    // `newPlayer` can be a string or a previously saved player object
     const name = typeof newPlayer === 'string'
       ? newPlayer
       : newPlayer.PlayerName
@@ -57,7 +58,7 @@ class Autocomplete extends Component {
         containerStyle={{
           backgroundColor: '#000'
         }}
-        rightIcon={<View><Text style={{color: 'white'}}>+</Text></View>}
+        rightIcon={<View><Text style={{ color: '#fff' }}>+</Text></View>}
       />
     </TouchableOpacity>
   );
@@ -87,10 +88,8 @@ class Autocomplete extends Component {
 
   render() {
     const { newPlayer } = this.state;
-    const { data } = this.props;
     const showResults =
       this.state.newPlayer !== ''
-      && data.length
       && !this.state.playerNameExists;
     return (
       <View style={styles.container}>

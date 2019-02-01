@@ -35,7 +35,7 @@ export const GameSetupImages = () => (
           width: 300,
           height: 300,
           marginTop: 20,
-          marginBottom: 50
+          marginBottom: 30
         }}
         source={require('../../assets/Instruction_PNGs/GameSetUp2.png')}
         resizeMode='cover'

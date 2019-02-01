@@ -128,17 +128,29 @@ class CreateGame extends Component {
   };
 
   filterSavedPlayers = (search) => {
-    const { savedPlayers, game } = this.state;
+    const { game } = this.state;
     if (search !== '') {
-      const filteredPlayers =
-        savedPlayers.filter(player => (
-            player.PlayerName.indexOf(search.toUpperCase()) > -1
-          )
-        );
-      this.setState({
-        savedPlayers: filteredPlayers,
-        searchingSavedPlayers: false
-      });
+      if (game.players.toJS().length) {
+        const gamePlayers = this._savedPlayers.filter(player => {
+          return !game.players.map(p => p.PlayerName).includes(player.PlayerName)
+        });
+        const currentFilteredPlayers = gamePlayers.filter(player => (
+          player.PlayerName.indexOf(search.toUpperCase()) > -1
+        ));
+        this.setState({
+          savedPlayers: currentFilteredPlayers,
+          searchingSavedPlayers: true
+        });
+      } else {
+        const filteredPlayers =
+          this._savedPlayers.filter(player => {
+            return player.PlayerName.indexOf(search.toUpperCase()) > -1
+          });
+        this.setState({
+          savedPlayers: filteredPlayers,
+          searchingSavedPlayers: true
+        });
+      }
     } else {
       const gamePlayers = this._savedPlayers.filter(player => {
           return !game.players.map(p => p.PlayerName).includes(player.PlayerName)

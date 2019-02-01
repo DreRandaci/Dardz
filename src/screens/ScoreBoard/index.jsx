@@ -101,10 +101,11 @@ class ScoreBoard extends Component {
         trans.executeSql(InsertIntoGame, [numOfPlayers],
           (webSql, gameResults) => {
           const { insertId: gameID } = gameResults;
-          players
-            // Order the players by score to determine game placement. A 0 index in the array = 1st place, 1 index = 2nd place, etc.
-            .sort((a, b) => b.Score - a.Score)
-            .map((player, index) => {
+          // Order the players by score to determine game placement. A 0 index in the array = 1st place, 1 index = 2nd place, etc.
+          const sortedPlayers = players.sort((a, b) => {
+              return b.Score - a.Score;
+            });
+            sortedPlayers.map((player, index) => {
               const place = index + 1;
               /*
                 Check if there is a player.PlayerID and determine if the player needs to be created in the db first
