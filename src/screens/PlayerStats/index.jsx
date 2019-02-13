@@ -11,7 +11,8 @@ class PlayerStats extends Component {
     super(props);
     this.state = {
       players: [],
-      search: ''
+      search: '',
+      playersLoaded: false
     };
     this._players = [];
     this.colors = [
@@ -57,22 +58,59 @@ class PlayerStats extends Component {
           return playerObj
         });
         this._players = playersWithColors;
-        this.setState({ players: playersWithColors });
+        this.setState({ players: playersWithColors, playersLoaded: true });
       });
     }, (err) => console.log(err));
   }
 
+  createPlayerList = (players) => {
+    return players.sort((a, b) => {
+      if (a.PlayerName < b.PlayerName) { return -1; }
+      if (a.PlayerName > b.PlayerName) { return 1; }
+      return 0;
+    }).map((player, index) => {
+      return (
+        <TouchableOpacity key={index} onPress={() => {
+          this.props.navigation.navigate('Stats',
+            { player, refreshPlayers: this.getPlayers }
+          );
+        }}>
+          <ListItem
+            style={{
+              width: Dimensions.get('window').width,
+              paddingLeft: 50,
+              paddingRight: 50,
+              paddingTop: 12,
+            }}
+            containerStyle={{
+              backgroundColor: '#000',
+            }}
+            titleStyle={{
+              color: '#fff',
+              fontSize: 20
+            }}
+            key={index}
+            title={player.PlayerName}
+            chevron
+          />
+        </TouchableOpacity>
+      )
+    })
+  }
+
   render() {
-    const { players } = this.state;
+    const { players, playersLoaded } = this.state;
+    if (!playersLoaded) { return (
+      <View style={{
+        height: Dimensions.get('window').height,
+        backgroundColor: '#000',
+        width: Dimensions.get('window').width
+      }}>
+      </View>
+      )
+    }
     return (
       <View style={styles.container}>
-        <ScrollView
-          contentContainerStyle={{
-          backgroundColor: '#000',
-          flex: 1,
-          marginTop: 10
-          }}
-        >
           {players.length && (
             <SearchBar
               searchIcon={{ size: 24 }}
@@ -90,38 +128,17 @@ class PlayerStats extends Component {
               placeholder='Search'
             />)}
           {players.length ? (
-            players.sort((a, b) => {
-              if (a.PlayerName < b.PlayerName) { return -1; }
-              if (a.PlayerName > b.PlayerName) { return 1; }
-              return 0;
-            }).map((player, index) => {
-              return (
-                <TouchableOpacity key={index} onPress={() => {
-                  this.props.navigation.navigate('Stats',
-                    { player, refreshPlayers: this.getPlayers }
-                  );
-                }}>
-                  <ListItem
-                    style={{
-                      width: Dimensions.get('window').width,
-                      paddingLeft: 50,
-                      paddingRight: 50,
-                      paddingTop: 12,
-                    }}
-                    containerStyle={{
-                      backgroundColor: '#000',
-                    }}
-                    titleStyle={{
-                      color: '#fff',
-                      fontSize: 20
-                    }}
-                    key={index}
-                    title={player.PlayerName}
-                    chevron
-                  />
-                </TouchableOpacity>
-              )
-          })) : (
+            <View style={{ flex: 1 }}>
+            <ScrollView
+              contentContainerStyle={{
+                backgroundColor: '#000',
+                marginTop: 10
+              }}
+            >
+              {this.createPlayerList(players)}
+            </ScrollView>
+            </View>
+          ) : (
             <View
               style={{
                 flex: 1,
@@ -136,7 +153,6 @@ class PlayerStats extends Component {
               </View>
             </View>
           )}
-        </ScrollView>
         <View style={{ alignSelf: 'flex-start', margin: 15 }}>
           <TouchableOpacity
             onPress={() => this.props.navigation.goBack()}
