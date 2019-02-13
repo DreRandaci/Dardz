@@ -51,62 +51,14 @@ expo build:android
 ```
 
 ### *Outstanding issues*
-- [X] When you click `Player Stats` it opens the stats page.
-
-- [X] Add 2 new buttons to the home screen. `Player Stats` and Dardz.com.
-
-- [X] When you click Dardz.com a pop up window should say “Are you sure you want to open Safari?” ‘No’ and ‘Yes’.
-
-- [X] Add new button to the ‘How to Play’ menu. ‘Watch Video’. When you click ‘Watch Video’ a pop up window should say “Are you sure you want to open YouTube?” ‘No’ and ‘Yes’.
-
-- [X] Add a small game clock that starts as soon as you click ‘start game’.
-
-- [X] The text in all of the swooshes needs to be moved down and centered a bit more. That’s all of the players names and the ‘start game’ button.
-
-- [X] I’ve re-written almost all of the instructions, so we’ll have to figure out the best way of getting these replaced.
-
-- [X] When you click ‘end game’ Change pop up window to “Are you sure you want to end the game?” After you click ‘Ok’ another pop up window should say, “Save game scores?” ‘No’ and ‘Yes’  If you click ‘No’ it takes you back to the screen where all of the same player names are still entered so you can play again. If you click ‘Yes’ it takes you to the ‘Player Stats’ page and updates the stats. There should be a back button from the stats page that takes you back to the screen where you can play again.
-
-- [X] When viewing the instructions and swipe from the left of the screen to go back it currently takes you to the home page, but should take you back to the "how to play" menu
-
-- [X] When you click ‘start game’ the first time you use the app, an instruction window should pop up that says, “Click on a player’s name to add points to their score.” Then maybe a button to close the window that says ‘Ok’.
-
-- [X] Alphabitized list of players where you click on a player and it goes to a second screen with "games played" and number of times they've gotten 1st-8th. Players should be searchable
-
-- [X] Revise the splash screen when you click ’start game’ to say, “Click on a players name to change their score. Use the +/- and = buttons."
-
-- [X] Add “Images” button to ‘How to Play’ menu. order from the top. Instructions, Questions & Rules, Images.
-
-- [X] Make (See card layout images) and (See game set up image) link to the images, and add an X or < back button.
-
-- [X] When you click ‘Add Player’ it should work like when you’re searching for a contact in your phone. As soon as you type a letter, any existing players with that letter pop up in a drop down menu. If you click enter after typing a new player name in, it should store that player in the app. We should make it so you can’t have 2 players with the same name.
-
-- [X] Make player stats alphabitized
-
-- [X] Change the player stats list to black with white text listItems
-
-- [X] Remove text from End Game alert and change New Game to End Game
-
-- [X] Delete player from player stats
-
-- [] Check layouts on older iPhone devices
-
-- [X] Border around game Images
-
-- [] when selecting a autocomplete name, you have to click twice. should click once
-
-- [X] cache game setup images
-
+- [] Check layout/styling on older iPhone devices
+- [] Check layout/styling on older Android devices
+- [] Update Android version
 
 ### *Known Bugs*
-- [X] When you swipe from the left in any of the instructions modal it should take you to the "How To" screen and not back to the home/splash screen
-- [] The number currently getting added/subtracted get pushed down in the calculator
-- [] when adding +3, +4, and +999 (and a few other combos) on the calculator break
+- [] When two or more players tie, game placement is determined by player name. There should be a tie breaking algorithm
 
-### NOTES:
-- See if there can be a user scenario when the app is submitted so the tester can walk through the app in a specific process
-- See if we can submit a video example of using the app
-- Ensure there is a part of the App Store description that specifies this is paird with a game
+- [] when selecting a autocomplete name in "Create Game", you have to click twice. Should only have to click once
 
 ### Future features:
-- [] Make Instructions and Questions & Rules searchable if possible.
+- [] Make Instructions and Questions & Rules searchable
