@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { gray999 } from '../../colors';
 import Logo from '../../components/LogoHeader';
 import SplashButton from '../../components/SplashButtons';
 import Instructions from '../../assets/Instructions.png';
-import QuickList from '../../assets/QuickList.png';
-import QuestionsAndRules from '../../assets/Questions&Rules.png';
+// import QuickList from '../../assets/QuickList.png';
 import TeamDardz from '../../assets/TeamDardz.png';
 import DrinkingDardz from '../../assets/DrinkingDardz.png';
+import Images from '../../assets/Images.png';
+import QuestionsAndRules from '../../assets/Questions&Rules.png';
 import WatchVideo from '../../assets/WatchVideo.png';
 import InstructionsModal from '../../components/InstructionsModal';
 
@@ -41,17 +42,21 @@ export default class HowTo extends Component {
           imgStyles={styles.logoImg}
         />
         <SplashButton
-          // TODO: subscribe and pull assets off of appContainer
           asset={Instructions}
           onPress={() => this.toggleModal('instructions')}
         />
-        <SplashButton
+        {/* <SplashButton
           asset={QuickList}
           onPress={() => this.toggleModal('quickList')}
-        />
+        /> */}
         <SplashButton
           asset={QuestionsAndRules}
           onPress={() => this.toggleModal('questionsAndRules')}
+        />
+        <SplashButton
+          asset={Images}
+          // onPress={() => this.props.navigation.navigate('GameSetupImages')}
+          onPress={() => this.toggleModal('imagesOnly')}
         />
         <SplashButton
           asset={TeamDardz}
@@ -63,13 +68,17 @@ export default class HowTo extends Component {
         />
         <SplashButton
           asset={WatchVideo}
-          onPress={() => this.props.navigation.navigate('VideoPlayer')}
+          // onPress={() => this.props.navigation.navigate('VideoPlayer')}
+          onPress={() => {
+            Linking.openURL('https://www.youtube.com/embed/xO1bLOgwO04?rel=0&autoplay=0&showinfo=0&controls=0')
+          }}
         />
         <InstructionsModal
           instructionsOpen={instructionsOpen}
           instructionSet={this.state.instructionSet}
-          closeModal={() => this.closeModal()}
-        />
+          closeModal={this.closeModal}
+          toggleModal={this.toggleModal}
+      />
         <View style={styles.backChev}>
           <TouchableOpacity
             onPress={() => this.props.navigation.goBack()}

@@ -1,10 +1,8 @@
-import { SQLite } from 'expo';
 import {
   CreateUserTable,
   CreateGameTable,
   CreatePlayerTable,
   CreateScoreTable,
-  // CreatePlayerScoreTable,
   CreatePlayerGameTable,
   InsertDefaultUserRecord,
   InserDefaultGameRecord,
@@ -17,7 +15,7 @@ import {
   InsertSixthScoreRecord,
   InsertSeventhScoreRecord,
   InsertEighthScoreRecord
-} from '../SQLiteScripts/CreateDatabase';
+} from './CreateDatabase';
 
 export default createDatabase = (connection) => {
   // Create the local database if it does not exist
@@ -31,8 +29,6 @@ export default createDatabase = (connection) => {
 
   // trans.executeSql('DROP TABLE IF EXISTS Score;', [], (_, { rows }) => console.log('Score Table Dropped'));
 
-  // trans.executeSql('DROP TABLE IF EXISTS PlayerScore;', [], (_, { rows }) => console.log('PlayerScore Table Dropped'));
-
   // trans.executeSql('DROP TABLE IF EXISTS PlayerGame;', [], (_, {
   //   rows
   // }) => console.log('PlayerGame Table Dropped'));
@@ -41,7 +37,6 @@ export default createDatabase = (connection) => {
   trans.executeSql(CreateGameTable);
   trans.executeSql(CreatePlayerTable);
   trans.executeSql(CreateScoreTable);
-  // trans.executeSql(CreatePlayerScoreTable);
   trans.executeSql(CreatePlayerGameTable);
   trans.executeSql(InsertDefaultUserRecord);
 
@@ -52,6 +47,12 @@ export default createDatabase = (connection) => {
   //     rows
   //   }));
 
+  // trans.executeSql('SELECT * FROM Game;', [], (_, {
+  //     rows
+  //   }) =>
+  //   console.log('GAME', rows)
+  // );
+
   // trans.executeSql(InserDefaultPlayerRecord, (_, {
   //     rows
   //   }) =>
@@ -59,6 +60,7 @@ export default createDatabase = (connection) => {
   //     rows
   //   }));
 
+  // Insert the score records
   trans.executeSql(InsertFirstScoreRecord);
   trans.executeSql(InsertSecondScoreRecord);
   trans.executeSql(InsertThirdScoreRecord);
@@ -69,17 +71,11 @@ export default createDatabase = (connection) => {
   trans.executeSql(InsertEighthScoreRecord);
 
   // ORDER: SQL statement (1 at a time), arguments (use ? as placeholder), rows inserted
+
   // trans.executeSql('SELECT * FROM User WHERE UserID = 1;', [], (_, {
   //     rows
   //   }) =>
   //   console.log('USER', rows._array[0]));
-
-
-  // trans.executeSql('SELECT * FROM Game;', [], (_, {
-  //     rows
-  //   }) =>
-  //   console.log('GAME', rows)
-  // );
 
   // trans.executeSql('SELECT * FROM Player;', [], (_, {
   //     rows

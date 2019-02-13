@@ -3,74 +3,59 @@ import { View, TouchableOpacity } from 'react-native';
 import {
   KeyboardAwareScrollView
 } from 'react-native-keyboard-aware-scroll-view';
-import { Input, Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import styles from './styles';
 import { appContainer, Subscribe } from '../../contexts';
 import { GameRecord } from '../../feathers/records';
 import BottomButtons from '../../components/BottomNavButtons';
+import Autocomplete from '../../components/Autocomplete';
 import PlayerSwatch from '../../components/PlayerSwatch';
 import Logo from '../../components/LogoHeader';
-import { gray999 } from '../../colors';
 
 class CreateGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newPlayer: '',
-      playerNameExists: false,
       instructionsOpen: false,
       usedSwatchIds: [],
-      game: new GameRecord()
+      game: new GameRecord(),
+      playerNameSearch: '',
+      // savedPlayers is mutated throughout the filtering flow
+      savedPlayers: [],
+      searchingSavedPlayers: false
     }
+    // _savedPlayers is complete list of saved players for resetting
+    this._savedPlayers = [];
+  }
+
+  componentDidMount = () => {
+    const { DatabaseConnection } = appContainer;
+    DatabaseConnection.transaction(trans => {
+      trans.executeSql('SELECT * From Player', null, (webSql, { rows }) => {
+        this._savedPlayers = rows._array;
+        this.setState({ savedPlayers: rows._array });
+      });
+    }, (err) => console.log(err));
   }
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.repeatGame) {
       const { game } = this.state;
       const { players } = nextProps;
-      const resetPlayers = players.map(player => (
+      const repeatPlayers = players.map(player => (
         {
           ...player,
-          score: 0
+          Score: 0
         })
       );
-      const resetGame = game.set('players', resetPlayers);
-      this.setState({ game: resetGame });
+      const repeatGame = game.set('players', repeatPlayers);
+      this.setState({ game: repeatGame });
     }
   }
 
-  addNewPlayer = () => {
-    const { newPlayer, game } = this.state;
-    if (game.players.size <= 8) {
-      const playerNameExists = game.players
-        .toJS()
-        .map(p => p.name)
-        .includes(newPlayer.toUpperCase());
-      if (playerNameExists) {
-        this.setState({ playerNameExists: true });
-      } else if (newPlayer !== '') {
-        const newSwatch = this.getRandomSwatch();
-        const player = new Object({
-          name: newPlayer.toUpperCase(),
-          swatch: newSwatch,
-          score: 0
-        });
-        this.setState({
-          game: this.state.game.updateIn(
-            ['players'], arr => arr.concat([player])
-          ),
-          newPlayer: '',
-          playerNameExists: false
-        });
-      }
-    } else {
-      // TODO: 8 players exist, post a message
-    }
-  };
-
-  // Recursively generate a random swatch color for new player names
   getRandomSwatch = () => {
+    // Recursively generate a random swatch color for new player names
     const { usedSwatchIds } = this.state;
     const randomNum = Math.floor(Math.random() * 8);
     const swatchIsUsed = usedSwatchIds.includes(randomNum);
@@ -83,16 +68,26 @@ class CreateGame extends Component {
     }
   }
 
-  removePlayer = playerName => {
+  removePlayer = (player) => {
     const { game } = this.state;
     const updatedPlayers = game.players.filter(
-      player => player.name !== playerName
+      _player => player.PlayerName !== _player.PlayerName
     );
-    this.setState(() => ({
-      game: game.updateIn(
-        ['players'], () => updatedPlayers
-      )
-    }));
+    if (player.PlayerID) {
+      // If this is a saved player, add them back to the list on state
+      this.setState(() => ({
+        game: game.updateIn(
+          ['players'], () => updatedPlayers
+        ),
+        savedPlayers: [...this.state.savedPlayers, player]
+      }));
+    } else {
+      this.setState(() => ({
+        game: game.updateIn(
+          ['players'], () => updatedPlayers
+        )
+      }));
+    }
   };
 
   createGame = () => {
@@ -102,13 +97,87 @@ class CreateGame extends Component {
 
   toggleModal = () => {
     this.setState({ instructionsOpen: !this.state.instructionsOpen });
-  }
+  };
+
+  addNewPlayer = (newPlayer) => {
+    const { game } = this.state;
+    const defaults = {
+      Swatch: this.getRandomSwatch(),
+      Score: 0
+    };
+    // Create the standard player object based off of a new or existing player
+    const player = typeof newPlayer === 'string'
+      ? new Object({
+        PlayerName: newPlayer.toUpperCase(),
+        IsUser: 0,
+        ...defaults
+      })
+      : new Object({
+        PlayerName: newPlayer.PlayerName.toUpperCase(),
+        ...defaults,
+        ...newPlayer
+      })
+    this.setState({
+      game: game.updateIn(
+        ['players'], arr => arr.concat([player])
+      ),
+      newPlayer: '',
+      playerNameExists: false,
+      searchingSavedPlayers: false
+    });
+  };
+
+  filterSavedPlayers = (search) => {
+    const { game } = this.state;
+    if (search !== '') {
+      if (game.players.toJS().length) {
+        const gamePlayers = this._savedPlayers.filter(player => {
+          return !game.players.map(p => p.PlayerName).includes(player.PlayerName)
+        });
+        const currentFilteredPlayers = gamePlayers.filter(player => (
+          player.PlayerName.indexOf(search.toUpperCase()) > -1
+        ));
+        this.setState({
+          savedPlayers: currentFilteredPlayers,
+          searchingSavedPlayers: true
+        });
+      } else {
+        const filteredPlayers =
+          this._savedPlayers.filter(player => {
+            return player.PlayerName.indexOf(search.toUpperCase()) > -1
+          });
+        this.setState({
+          savedPlayers: filteredPlayers,
+          searchingSavedPlayers: true
+        });
+      }
+    } else {
+      const gamePlayers = this._savedPlayers.filter(player => {
+          return !game.players.map(p => p.PlayerName).includes(player.PlayerName)
+        }
+      );
+      const currentFilteredPlayers = gamePlayers.filter(player => (
+        player.PlayerName.indexOf(search.toUpperCase()) > -1
+      ));
+      this.setState({
+        savedPlayers: currentFilteredPlayers,
+        searchingSavedPlayers: false
+      });
+    }
+  };
+
+  removePlayerFromSuggestions = (playerID) => {
+    const filteredPlayers = this.state.savedPlayers.filter(player => (
+      player.PlayerID !== playerID
+    ));
+    this.setState({
+      savedPlayers: filteredPlayers,
+      searchingSavedPlayers: false
+    });
+  };
 
   render() {
-    if (this.props.repeatGame) {
-
-    }
-    const { instructionsOpen, game } = this.state;
+    const { instructionsOpen, game, searchingSavedPlayers } = this.state;
     const RemovePlayerIcon = ({ player }) => (
       <TouchableOpacity onPress={() => this.removePlayer(player)}>
         <Icon type="entypo" name="cross" color="#fff" size={32} />
@@ -117,7 +186,9 @@ class CreateGame extends Component {
 
     return (
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps='always'
+        >
           <Logo
             containerStyles={styles.logoContainer}
             imgStyles={styles.logoImg}
@@ -126,38 +197,25 @@ class CreateGame extends Component {
             {game.players.toJS().map((player, index) => (
               <View key={`playerSwatch-${index}`}>
                 <PlayerSwatch
-                  playerName={player.name}
-                  rightElement={<RemovePlayerIcon player={player.name} />}
-                  swatch={player.swatch.swatch}
+                  playerName={player.PlayerName}
+                  rightElement={<RemovePlayerIcon player={player} />}
+                  swatch={player.Swatch.swatch}
                 />
               </View>
             ))}
-            {/*
-              TODO: hide the input component or fire an alert letting the user know 8 players is the max?
-            */}
             {game.players.size < 8 &&
-              <View style={styles.inputContainer}>
-                <Input
-                  placeholder='+ ADD PLAYER'
-                  placeholderTextColor={gray999}
-                  autoCorrect={false}
-                  inputStyle={{ color: '#fff' }}
-                  inputContainerStyle={{ borderBottomColor: '#444' }}
-                  value={this.state.newPlayer}
-                  keyboardAppearance='dark'
-                  onSubmitEditing={() => this.addNewPlayer()}
-                  errorStyle={{ color: 'red', fontSize: 14 }}
-                  errorMessage={
-                    this.state.playerNameExists
-                      ? 'There is already a player with that name.'
-                      : null
-                  }
-                  onChangeText={newPlayer => { this.setState({ newPlayer }) }}
-                />
+              <View>
+                  <Autocomplete
+                    game={game}
+                    addNewPlayer={this.addNewPlayer}
+                    data={this.state.savedPlayers}
+                    filterSavedPlayers={this.filterSavedPlayers}
+                    removePlayerFromSuggestions={this.removePlayerFromSuggestions}
+                  />
               </View>
             }
             <View style={styles.buttonContainer}>
-              {game.players.size > 1 &&
+              {(game.players.size > 1 && !searchingSavedPlayers) &&
                 <TouchableOpacity onPress={this.createGame}>
                   <PlayerSwatch
                     playerName="START GAME"
@@ -179,7 +237,7 @@ class CreateGame extends Component {
           navigation={this.props.navigation}
           endGame={() => this.props.navigation.goBack()}
           instructionsOpen={instructionsOpen}
-          toggleModal={() => this.toggleModal()}
+          toggleModal={this.toggleModal}
         />
       </View>
     );

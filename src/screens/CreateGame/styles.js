@@ -29,7 +29,7 @@ export default (styles = StyleSheet.create({
   inputContainer: {
     alignItems: 'center',
     marginLeft: 25,
-    marginRight: 25,
+    marginRight: 25
   },
   buttonContainer: {
     marginTop: 20

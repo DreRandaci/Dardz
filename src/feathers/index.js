@@ -5,7 +5,6 @@ import game from './currentGame';
 import { appContainer as appContext } from '../contexts';
 
 import appContainer from './appContainer';
-import database from './database';
 
 const app = feathers();
 app.use('/currentGame', localstorage({
@@ -14,6 +13,5 @@ app.use('/currentGame', localstorage({
 
 app.configure((app) => appContainer(app, appContext));
 app.configure(game);
-// app.configure(database);
 
 export default app;

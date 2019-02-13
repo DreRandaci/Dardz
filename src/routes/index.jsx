@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import { createStackNavigator } from 'react-navigation';
 import { appContainer, Subscribe } from '../contexts';
@@ -9,21 +9,25 @@ import HowTo from '../screens/HowTo';
 import DardzWebsite from '../screens/DardzWebsite';
 import VideoPlayer from '../screens/VideoPlayer';
 import PlayerStats from '../screens/PlayerStats';
+import Stats from '../screens/Stats';
+
+const defaultNavOptions = {
+  header: null,
+  gesturesEnabled: false
+};
 
 const AppStack = createStackNavigator(
   {
     ScoreBoard: {
       screen: ScoreBoard,
       navigationOptions: {
-        header: null,
-        gesturesEnabled: false
+        ...defaultNavOptions
       }
     },
     CreateGame: {
       screen: CreateGame,
       navigationOptions: {
-        header: null,
-        gesturesEnabled: false
+        ...defaultNavOptions
       }
     },
     Splash: {
@@ -35,12 +39,17 @@ const AppStack = createStackNavigator(
     HowTo: {
       screen: HowTo,
       navigationOptions: {
-        header: null,
-        gesturesEnabled: false
+        ...defaultNavOptions
       }
     },
     PlayerStats: {
       screen: PlayerStats,
+      navigationOptions: {
+        header: null
+      }
+    },
+    Stats: {
+      screen: Stats,
       navigationOptions: {
         header: null
       }

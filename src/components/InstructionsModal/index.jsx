@@ -12,25 +12,30 @@ import {
   QuickList,
   QuestionsAndRules,
   TeamDardz,
-  DrinkingDardz
-} from '../../assets/Instructions';
+  DrinkingDardz,
+  GameSetupImages
+} from '../Instructions';
 
 const InstructionsModal = ({
-  instructionsOpen, closeModal, instructionSet }) => {
+  instructionsOpen, closeModal, instructionSet, toggleModal }) => {
   return (
     <Modal
-      animationType='slide'
+      animationType='fade'
       transparent={false}
       visible={instructionsOpen}
     >
       <ScrollView
-        style={{ padding: 30, backgroundColor: '#000' }}
+        style={{ padding: 30 }}
         minimumZoomScale={1}
         maximumZoomScale={5}
       >
         <View style={{ marginBottom: 60, marginTop: 30 }}>
           {instructionSet === 'instructions' &&
-            <Instructions />
+          /*
+            NOTE: this is prop drilling weirdness. Send the toggleModal function down and there will be a check if specifically the <Instructions> component fired it, requesting the "images" modal be shown. See the `instructionsSet` check below.
+            TODO: add better routing for image links to avoid this
+          */
+            <Instructions toggleModal={toggleModal} />
           }
           {instructionSet === 'quickList' &&
             <QuickList />
@@ -44,10 +49,20 @@ const InstructionsModal = ({
           {instructionSet === 'drinkingDardz' &&
             <DrinkingDardz />
           }
+          {(instructionSet === 'imagesOnly'
+            || instructionSet === 'imagesFromLink') &&
+            <GameSetupImages />
+          }
         </View>
       </ScrollView>
       <TouchableOpacity
-        onPress={closeModal}
+        onPress={() => {
+          if (instructionSet === 'imagesFromLink') {
+            toggleModal('instructions')
+          } else {
+            closeModal();
+          }
+        }}
         style={{
           position: 'absolute',
           bottom: 20,

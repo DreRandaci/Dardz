@@ -51,43 +51,14 @@ expo build:android
 ```
 
 ### *Outstanding issues*
-- [X] When you click `Player Stats` it opens the stats page.
-
-- [X] Add 2 new buttons to the home screen. `Player Stats` and Dardz.com.
-
-- [X] When you click Dardz.com a pop up window should say “Are you sure you want to open Safari?” ‘No’ and ‘Yes’.
-
-- [X] Add new button to the ‘How to Play’ menu. ‘Watch Video’. When you click ‘Watch Video’ a pop up window should say “Are you sure you want to open YouTube?” ‘No’ and ‘Yes’.
-
-- [X] Add a small game clock that starts as soon as you click ‘start game’.
-
-- [X] The text in all of the swooshes needs to be moved down and centered a bit more. That’s all of the players names and the ‘start game’ button.
-
-- [X] I’ve re-written almost all of the instructions, so we’ll have to figure out the best way of getting these replaced.
-
-- [X] When you click ‘end game’ Change pop up window to “Are you sure you want to end the game?” After you click ‘Ok’ another pop up window should say, “Save game scores?” ‘No’ and ‘Yes’  If you click ‘No’ it takes you back to the screen where all of the same player names are still entered so you can play again. If you click ‘Yes’ it takes you to the ‘Player Stats’ page and updates the stats. There should be a back button from the stats page that takes you back to the screen where you can play again.
-
-- [X] When viewing the instructions and swipe from the left of the screen to go back it currently takes you to the home page, but should take you back to the "how to play" menu
-
-- [X] When you click ‘start game’ the first time you use the app, an instruction window should pop up that says, “Click on a player’s name to add points to their score.” Then maybe a button to close the window that says ‘Ok’.
-
-- [] Check layouts on older iPhone devices
-
-<!-- - [] The `Player Stats` should be a list ranked by how many times a player has won. It should list ‘games played’ and ‘games won’. You should be able to click on a player and see how many times they’ve gotten each place, 1-8. You should also be able to edit the players name. -->
-
-- [] Alphabitized list of players where you click on a player and it goes to a second screen with "games played" and number of times they've gotten 1st-8th. Players should be searchable
-
-- [] When you click ‘Add Player’ it should work like when you’re searching for a contact in your phone. As soon as you type a letter, any existing players with that letter pop up in a drop down menu. If you click enter after typing a new player name in, it should store that player in the app. We should make it so you can’t have 2 players with the same name.
+- [] Check layout/styling on older iPhone devices
+- [] Check layout/styling on older Android devices
+- [] Update Android version
 
 ### *Known Bugs*
-- [X] Timer memory leak when a user is using the app for the first time
-- [X] The showFirstTimeInstructions overlay fires when repeating a game
-- [X] When adding a new player name, make sure the text clears on "Enter" and turn off autocorrect
-- [] Fix instruction PNG resolutions
-- [X] When you swipe from the left in the instructions modal it should take you to the How To screen and not back to home/splash
-- [X] Fix exiting out of the video view
+- [] When two or more players tie, game placement is determined by player name. There should be a tie breaking algorithm
 
-### NOTES:
-- See if there can be a user scenario when the app is submitted so the tester can walk through the app in a specific process
-- See if we can submit a video example of using the app
-- Ensure there is a part of the App Store description that specifies this is paird with a game
+- [] when selecting a autocomplete name in "Create Game", you have to click twice. Should only have to click once
+
+### Future features:
+- [] Make Instructions and Questions & Rules searchable

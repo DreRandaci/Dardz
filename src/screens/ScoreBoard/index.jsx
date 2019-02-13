@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   Alert,
   View,
-  AsyncStorage } from 'react-native';
+  Dimensions } from 'react-native';
 import { Overlay } from 'react-native-elements';
 import styles from './styles';
 import { appContainer, Subscribe } from '../../contexts';
@@ -18,7 +18,7 @@ import {
   InsertIntoGame,
   InsertIntoPlayer,
   InsertIntoPlayerGame
-} from '../../SQLiteScripts/Inserts';
+} from '../../database/Inserts';
 
 class ScoreBoard extends Component {
   constructor(props) {
@@ -29,24 +29,35 @@ class ScoreBoard extends Component {
       playerToUpdate: {},
       instructionsOpen: false,
       // isFirstTimeUser is set on the global app state in the App entry point
-      showFirstTimeUserInstructions: this.props.isFirstTimeUser
+      // showFirstTimeUserInstructions: this.props.isFirstTimeUser
+      showFirstTimeUserInstructions: false
     };
+  }
+
+  componentDidMount = () => {
+    const { DatabaseConnection } = appContainer;
+    DatabaseConnection.transaction(trans => {
+      trans.executeSql('SELECT * From User', null, (webSql, { rows }) => {
+        const { IsFirstTimeUser } = rows._array[0];
+        this.setState({
+          showFirstTimeUserInstructions: IsFirstTimeUser === 1 ? true : false
+        })
+      });
+    }, (err) => console.log(err));
   }
 
   confirmFirstTimeUserInstructions = async () => {
     /*
       Set whether the user has used the app before to show/hide the helper overlay on first game creation
     */
-    try {
-      if (this.props.isFirstTimeUser) {
-        await AsyncStorage.setItem('isFirsTimeUser', JSON.stringify(false));
-        // Somehow i need to update the app state and cause a rerender... or do I? it might be working
-        appContainer.set('isFirstTimeUser', false);
-      }
-      this.setState({ showFirstTimeUserInstructions: false });
-    } catch (error) {
-      console.log({ error });
-    }
+    const { DatabaseConnection } = appContainer;
+    DatabaseConnection.transaction(trans => {
+      trans.executeSql('UPDATE User SET IsFirstTimeUser = 0', null, (webSql, { rows }) => {
+        this.setState({
+          showFirstTimeUserInstructions: false
+        });
+      });
+    }, (err) => console.log(err));
   }
 
   openCalculator = player => {
@@ -56,14 +67,14 @@ class ScoreBoard extends Component {
   closeCalculator = (newPlayerScore = undefined) => {
     let { playerToUpdate, players } = this.state;
     /*
-      NOTE: `newPlayerScore` can equal "0", so a strict evaluation against `undefined` values is required.
+      NOTE: `newPlayerScore` can equal "0", so a strict evaluation against `undefined` is required.
     */
     if (newPlayerScore !== undefined) {
       players = players.update(
         players.findIndex((player) => {
-          return player.name === playerToUpdate.name;
+          return player.PlayerName === playerToUpdate.PlayerName;
         }), (player) => {
-          player.score = newPlayerScore;
+          player.Score = newPlayerScore;
           return player;
         }
       );
@@ -81,50 +92,103 @@ class ScoreBoard extends Component {
 
   saveGame = () => {
     // Look at the CreateDatabase.js (schema) file for database layout
-    /**
-     TODO: to handle updates, check if the player object has an ID on it. This would mean they have played before and thus should be updated instead of inserted/created
-    **/
+    const { players } = this.props;
+    const numOfPlayers = players.size;
     return new Promise((resolve, reject) => {
       const { DatabaseConnection } = appContainer;
       DatabaseConnection.transaction(trans => {
-        trans.executeSql(InsertIntoGame, null, (webSql, gameResults) => {
+        // Insert a new game record to get the gameID
+        trans.executeSql(InsertIntoGame, [numOfPlayers],
+          (webSql, gameResults) => {
           const { insertId: gameID } = gameResults;
-          this.props.players
-            .sort((a, b) => b.score - a.score)
-            .map((player, index) => {
-              const playerArgs = [player.name, 0, 0, 1];
-              trans.executeSql(InsertIntoPlayer, playerArgs, (webSql, playerResults) => {
-                const { insertId: playerID } = playerResults;
-                const place = index + 1;
-                const playerGameArgs = [playerID, gameID, place];
+          // Order the players by score to determine game placement. A 0 index in the array = 1st place, 1 index = 2nd place, etc.
+          const sortedPlayers = players.sort((a, b) => {
+            const score = b.Score - a.Score;
+            return score;
+          });
+
+            // TODO: this isnt implemented in the actual save functionality, merely for testing
+            const sortedToJs = sortedPlayers.toJS();
+            const playerPlaces = sortedPlayers.map((player, index) => {
+              const place = index + 1;
+              if (index > 0) {
+                const prevScore = sortedToJs[index - 1].Score;
+                if (prevScore === player.Score) {
+                  let prevPlayerPlace = sortedToJs[index - 1].Place;
+                  if (sortedToJs.length > 3 && index > 1) {
+                    prevPlayerPlace = prevPlayerPlace - 1;
+                  }
+                  // If 4 or more players are being checked, you have to offset the index by 1 (two people are tied for 1st, that means that the 2nd place person is really at index 3 and they wont hit the -1 logic to compinsate)
+                  player.Place = prevPlayerPlace;
+                  return player;
+                }
+              }
+              player.Place = place;
+              return player;
+            });
+            console.log(playerPlaces.toJS())
+
+            sortedPlayers.map((player, index) => {
+              const place = index + 1;
+              if (index > 0) {
+                const prevScore = sortedPlayers.toJS()[index-1].Score;
+                if(prevScore === player.Score) {
+                  sortedPlayers.toJS()[index - 1].Place
+                  player.PlayerName
+                } else {
+                  player.Place = place;
+                }
+              }
+              /*
+                Check if there is a player.PlayerID and determine if the player needs to be created in the db first
+              */
+              const _playerId = player.PlayerID ? player.PlayerID : null
+              if (!_playerId) {
+                const playerArgs = [_playerId, player.PlayerName, 0];
+                trans.executeSql(InsertIntoPlayer, playerArgs, (webSql, playerResults) => {
+                  const { insertId: newPlayerID } = playerResults;
+                  const playerGameArgs = [
+                    newPlayerID, gameID, place, player.Score
+                  ];
+                  // Insert the PlayerGame record with the new playerID
+                  trans.executeSql(InsertIntoPlayerGame, playerGameArgs, (webSQL, playerGameResults) => {
+                    resolve({
+                      gameResults,
+                      playerResults,
+                      playerGameResults
+                    });
+                  });
+                }, (err) => console.log('InsertIntoPlayer ERROR:', err));
+              } else {
+                const playerGameArgs = [_playerId, gameID, place, player.Score];
+                // Insert the PlayerGame record with the existing _playerId
                 trans.executeSql(InsertIntoPlayerGame, playerGameArgs, (webSQL, playerGameResults) => {
                   resolve({
                     gameResults,
-                    playerResults,
                     playerGameResults
                   });
-                });
-              });
+                }, (err) => console.log('InsertIntoPlayerGame ERROR:', err));
+              }
             });
-        });
+          }, (err) => console.log('InsertIntoGame ERROR:', err));
       }, (err) => reject(err));
     });
   }
 
   endGame = () => {
     const { alert } = Alert;
+    const { players } = this.props;
+    const scoresExist = players.some(player => player.Score > 0);
     alert(
-      'End Game', 'Would you like to repeat the game or start a new one?', [
+      'End Game', null, [
       {
         text: 'Cancel',
         onPress: () => {},
         style: 'default'
       },
       {
-        text: 'New Game',
+        text: 'End Game',
         onPress: () => {
-          const { players } = this.props;
-          const scoresExist = players.some(player => player.score > 0);
           if (scoresExist) {
             alert(
               'Save?', 'Would you like to save the game?', [
@@ -132,7 +196,6 @@ class ScoreBoard extends Component {
                   text: 'Save',
                   onPress: () => {
                     this.saveGame().then(res => {
-                      console.log({res})
                       this.props.navigation.navigate('Splash');
                     }).catch(err => console.log(err))
                   },
@@ -153,25 +216,31 @@ class ScoreBoard extends Component {
         },
         style: 'destructive'
       },
-      { text: 'Repeat Game',
+      {
+        text: 'Repeat Game',
         onPress: () => {
-          const { players } = this.props;
-          const scoresExist = players.some(player => player.score > 0);
           if (scoresExist) {
             alert(
               'Save?', 'Would you like to save the game?', [
                 {
                   text: 'Save',
                   onPress: () => {
-                    this.saveGame();
-                    this.props.navigation.navigate('CreateGame', { repeatGame: true });
+                    this.saveGame().then(res => {
+                      this.props.navigation.navigate(
+                        'CreateGame',
+                        { repeatGame: true }
+                      );
+                    }).catch(err => console.log(err))
                   },
                   style: 'cancel'
                 },
                 {
                   text: 'Don\'t Save',
                   onPress: () => {
-                    this.props.navigation.navigate('CreateGame', { repeatGame: true });
+                    this.props.navigation.navigate(
+                      'CreateGame',
+                      { repeatGame: true }
+                    );
                   },
                   style: 'destructive'
                 }
@@ -206,15 +275,15 @@ class ScoreBoard extends Component {
           imgStyles={styles.logoImg}
         />
         <ScrollView style={styles.playersContainer}>
-          {players.sort((a, b) => b.score - a.score).map((player, index) => (
+          {players.sort((a, b) => b.Score - a.Score).map((player, index) => (
             <TouchableOpacity
               key={index}
               onPress={() => { this.openCalculator(player) }}
             >
               <PlayerSwatch
-                playerName={player.name}
-                rightElement={player.score}
-                swatch={player.swatch.swatch}
+                playerName={player.PlayerName}
+                rightElement={player.Score}
+                swatch={player.Swatch.swatch}
               />
             </TouchableOpacity>
           ))}
@@ -226,6 +295,7 @@ class ScoreBoard extends Component {
           toggleModal={this.toggleInstructionsModal}
         />
         <Overlay
+          width={Dimensions.get('screen').width - 25}
           isVisible={showCalculator}
           overlayStyle={{ padding: 0 }}
           windowBackgroundColor='#000'
@@ -242,15 +312,17 @@ class ScoreBoard extends Component {
           height={275}
           overlayStyle={{ padding: 0 }}
           windowBackgroundColor='#000'
-          onBackdropPress={() => this.setState({
-            showFirstTimeUserInstructions: false
-          })}
+          onBackdropPress={() => {
+            this.setState({
+              showFirstTimeUserInstructions: false
+            });
+          }}
         >
           <View style={{ backgroundColor: '#000', alignItems: 'center',
             justifyContent: 'center', flex: 1 }}
           >
             <TextWithAppFont color='#fff'>
-              Click on a player's name to add or subtract points!
+              Click on a players name to change their score. Use the +/- and = buttons.
             </TextWithAppFont>
             <View style={{ marginTop: 35, marginLeft: 25 }}>
               <TouchableOpacity onPress={() => {
@@ -265,11 +337,11 @@ class ScoreBoard extends Component {
             </View>
           </View>
         </Overlay>
-        {!showFirstTimeUserInstructions &&
+        {/* {!showFirstTimeUserInstructions && */}
           <View style={{ marginBottom: 35 }}>
             <Timer />
           </View>
-        }
+        // }
       </ScrollView>
     );
   }

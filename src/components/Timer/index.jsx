@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import TextWithAppFont from '../../components/TextWithAppFont';
 import { gray999 } from '../../colors';
 
@@ -21,11 +21,13 @@ export default class Timer extends React.Component {
     /*
       For some reason the timer stops at 1 second when you destructure "time" off of state
     */
-    this.timer = setInterval(() => this.setState({
-      isOn: true,
-      time: this.state.time + 1,
-      timeToAllDivisors: { ...this.secondsToTimeObj(this.state.time + 1) }
-    }), 1000);
+    this.timer = setInterval(() => {
+      this.setState({
+        isOn: true,
+        time: this.state.time + 1,
+        timeToAllDivisors: { ...this.secondsToTimeObj(this.state.time + 1) }
+      });
+    }, 1000);
   }
 
   secondsToTimeObj = (secs) => {
@@ -55,16 +57,6 @@ export default class Timer extends React.Component {
     clearInterval(this.timer)
   }
 
-  // stopTimer = () => {
-  //   const resetTime = {
-  //     h: 0,
-  //     m: 0,
-  //     s: 0
-  //   }
-  //   this.setState({ timeToAllDivisors: { ...resetTime }, isOn: false })
-  //   clearInterval(this.timer)
-  // }
-
   render() {
     const { timeToAllDivisors } = this.state;
     const { h, m, s } = timeToAllDivisors;
@@ -75,6 +67,6 @@ export default class Timer extends React.Component {
       <View>
         <TextWithAppFont color={gray999}>{hours}:{minutes}:{seconds}</TextWithAppFont>
       </View>
-    )
+    );
   }
 }
