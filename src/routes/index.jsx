@@ -8,7 +8,6 @@ import Splash from '../screens/Splash';
 import HowTo from '../screens/HowTo';
 import DardzWebsite from '../screens/DardzWebsite';
 import VideoPlayer from '../screens/VideoPlayer';
-// import GameSetupImages from '../screens/GameSetupImages';
 import PlayerStats from '../screens/PlayerStats';
 import Stats from '../screens/Stats';
 
@@ -66,13 +65,7 @@ const AppStack = createStackNavigator(
       navigationOptions: {
         header: null
       }
-    },
-    // GameSetupImages: {
-    //   screen: GameSetupImages,
-    //   navigationOptions: {
-    //     header: null
-    //   }
-    // }
+    }
   },
   {
     initialRouteName: 'Splash'
